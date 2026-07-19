@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "id": "modular-delight",
+  "version": "${version}",
+  "name": "Modular Delight",
+  "description": "Adds a modular cooking system to Farmer's Delight.",
+  "authors": [
+    "Wintooo"
+  ],
+  "contact": {
+    "homepage": "https://modrinth.com/mod/modular-delight",
+    "sources": "https://github.com/FabricMC/fabric-example-mod"
+  },
+  "license": "MIT",
+  "icon": "assets/modular-delight/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "net.wintooo.modulardelight.ModularDelight"
+    ],
+    "client": [
+      "net.wintooo.modulardelight.ModularDelightClient"
+    ],
+    "fabric-datagen": [
+      "net.wintooo.modulardelight.ModularDelightDataGenerator"
+    ]
+  },
+  "mixins": [
+    "modular-delight.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.19.3",
+    "minecraft": "~1.20.1",
+    "java": ">=17",
+    "fabric-api": "*"
+  }
+}
