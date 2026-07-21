@@ -3,6 +3,7 @@
   "package": "net.wintooo.modulardelight.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
+    "AbstractInventoryScreenMixin",
     "ItemStackTooltipDataMixin",
     "LivingEntityAttackMixin"
   ],
@@ -11,5 +12,8 @@
   },
   "overwrites": {
     "requireAnnotations": true
-	}
+  },
+  "client": [
+    "ScreenAccessor"
+  ]
 }

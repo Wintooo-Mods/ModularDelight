@@ -100,5 +100,10 @@
   "tooltip.modulardelight.effect.surefooted.activated": "gain Health Boost %s for %ss",
 
   "tooltip.modulardelight.meal.description.line1": "When eaten, this meal %s.",
-  "tooltip.modulardelight.meal.description.line2": "If %s, you %s."
+  "tooltip.modulardelight.meal.description.line2": "If %s, you %s.",
+  "tooltip.modulardelight.active.line1": "Meal currently %s.",
+  "tooltip.modulardelight.active.line2": "If %s, you %s.",
+  "tooltip.modulardelight.active.header.one": "%s Meal",
+  "tooltip.modulardelight.active.header.two": "%s & %s Meal",
+  "tooltip.modulardelight.active.header.three": "%s, %s & %s Meal"
 }

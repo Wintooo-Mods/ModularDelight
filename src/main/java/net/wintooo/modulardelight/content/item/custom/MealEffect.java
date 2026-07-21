@@ -20,10 +20,7 @@ import net.minecraft.util.math.Box;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Random;
-import java.util.UUID;
+import java.util.*;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -446,6 +443,10 @@ public record MealEffect(
         return effect;
     }
 
+    public static MealEffect byId(String id) {
+        return REGISTRY.get(id);
+    }
+
     public static Iterable<MealEffect> all() {
         return REGISTRY.values();
     }
@@ -455,6 +456,38 @@ public record MealEffect(
             if (effect.property() == property) return effect;
         }
         return null;
+    }
+
+    public List<Text> getMealTooltip() {
+        double mult = difficulty().multiplier();
+
+        return List.of(
+                Text.translatable(
+                        "tooltip.modulardelight.meal.description.line1",
+                        ambientDescription().apply(mult)
+                ),
+                Text.translatable(
+                        "tooltip.modulardelight.meal.description.line2",
+                        conditionDescription(),
+                        activatedDescription().apply(mult)
+                )
+        );
+    }
+
+    public List<Text> getActiveTooltip() {
+        double mult = difficulty().multiplier();
+
+        return List.of(
+                Text.translatable(
+                        "tooltip.modulardelight.active.line1",
+                        ambientDescription().apply(mult)
+                ),
+                Text.translatable(
+                        "tooltip.modulardelight.active.line2",
+                        conditionDescription(),
+                        activatedDescription().apply(mult)
+                )
+        );
     }
 
     public static MealEffect combine(MealEffect ambientSource, MealEffect conditionSource, MealEffect activatedSource) {

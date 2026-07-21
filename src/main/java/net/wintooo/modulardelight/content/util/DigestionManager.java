@@ -12,13 +12,18 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.wintooo.modulardelight.content.effect.ModStatusEffects;
 import net.wintooo.modulardelight.content.item.custom.MealEffect;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
+
+import static net.wintooo.modulardelight.content.network.DigestionNetworking.sync;
 
 public class DigestionManager {
-    private record ActiveEffect(MealEffect effect, int remainingTicks) {}
+    private record ActiveEffect(
+            MealEffect composite,
+            MealEffect ambient,
+            MealEffect condition,
+            MealEffect activated,
+            int remainingTicks
+    ) {}
 
     private static final Map<UUID, Map<String, ActiveEffect>> ACTIVE = new HashMap<>();
     private static final Map<UUID, Map<String, Integer>> COOLDOWNS = new HashMap<>();
@@ -36,16 +41,27 @@ public class DigestionManager {
             return true;
         });
 
-        ServerPlayConnectionEvents.DISCONNECT.register((handler, server) ->
-                forget(handler.getPlayer().getUuid()));
-
-        ServerPlayConnectionEvents.JOIN.register((handler, sender, server) ->
-                clearAllKnownModifiers(handler.getPlayer()));
+        ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> sync(handler.player));
     }
 
-    public static void grant(ServerPlayerEntity player, MealEffect effect, int durationTicks) {
+    public static void grant(
+            ServerPlayerEntity player,
+            MealEffect composite,
+            MealEffect ambient,
+            MealEffect condition,
+            MealEffect activated,
+            int durationTicks
+    ) {
         ACTIVE.computeIfAbsent(player.getUuid(), k -> new HashMap<>())
-                .put(effect.id(), new ActiveEffect(effect, durationTicks));
+                .put(composite.id(), new ActiveEffect(
+                        composite,
+                        ambient,
+                        condition,
+                        activated,
+                        durationTicks
+                ));
+
+        sync(player);
     }
 
     private static void tick(ServerPlayerEntity player) {
@@ -56,6 +72,7 @@ public class DigestionManager {
         if (active != null && !active.isEmpty()) {
             if (!hasDigestion) {
                 active.clear();
+                sync(player);
             } else {
                 applyAmbientStatusEffects(player, active);
                 tickActiveEffects(player, active);
@@ -67,7 +84,7 @@ public class DigestionManager {
 
     private static void applyAmbientStatusEffects(ServerPlayerEntity player, Map<String, ActiveEffect> active) {
         for (ActiveEffect entry : active.values()) {
-            MealEffect effect = entry.effect();
+            MealEffect effect = entry.composite();
             if (effect.ambientStatusEffect() == null) continue;
 
             StatusEffectInstance desired = effect.ambientStatusEffect().apply(1.0);
@@ -85,14 +102,23 @@ public class DigestionManager {
 
         while (it.hasNext()) {
             Map.Entry<String, ActiveEffect> entry = it.next();
-            MealEffect effect = entry.getValue().effect();
+            MealEffect effect = entry.getValue().composite();
             int remaining = entry.getValue().remainingTicks() - 1;
 
             if (remaining <= 0) {
                 it.remove();
+                sync(player);
                 continue;
             }
-            entry.setValue(new ActiveEffect(effect, remaining));
+            ActiveEffect old = entry.getValue();
+
+            entry.setValue(new ActiveEffect(
+                    old.composite(),
+                    old.ambient(),
+                    old.condition(),
+                    old.activated(),
+                    remaining
+            ));
 
             if (effect.tickTrigger() == null) continue;
 
@@ -112,7 +138,7 @@ public class DigestionManager {
 
         Map<String, Integer> cooldowns = COOLDOWNS.computeIfAbsent(player.getUuid(), k -> new HashMap<>());
         for (ActiveEffect entry : active.values()) {
-            MealEffect effect = entry.effect();
+            MealEffect effect = entry.composite();
             if (effect.damageTrigger() == null) continue;
 
             int cooldown = cooldowns.getOrDefault(effect.id(), 0);
@@ -131,7 +157,7 @@ public class DigestionManager {
 
         Map<String, Integer> cooldowns = COOLDOWNS.computeIfAbsent(attacker.getUuid(), k -> new HashMap<>());
         for (ActiveEffect entry : active.values()) {
-            MealEffect effect = entry.effect();
+            MealEffect effect = entry.composite();
             if (effect.attackTrigger() == null) continue;
 
             int cooldown = cooldowns.getOrDefault(effect.id(), 0);
@@ -151,7 +177,7 @@ public class DigestionManager {
         Map<UUID, MealEffect> desired = new HashMap<>();
         if (active != null) {
             for (ActiveEffect entry : active.values()) {
-                MealEffect effect = entry.effect();
+                MealEffect effect = entry.composite();
                 if (effect.ambientAttribute() == null) continue;
                 desired.put(effect.modifierId(), effect);
             }
@@ -179,7 +205,7 @@ public class DigestionManager {
             if (instance == null) continue;
 
             instance.removeModifier(modifierId);
-            instance.addTemporaryModifier(effect.scaledAmbientModifier(1.0));
+            instance.addTemporaryModifier(effect.scaledAmbientModifier(effect.difficulty().multiplier()));
             applied.put(modifierId, effect.ambientAttribute());
         }
 
@@ -188,17 +214,19 @@ public class DigestionManager {
         }
     }
 
-    private static void forget(UUID playerId) {
-        ACTIVE.remove(playerId);
-        COOLDOWNS.remove(playerId);
-        APPLIED_MODIFIERS.remove(playerId);
-    }
+    public static List<ActiveMeal> getMeals(ServerPlayerEntity player) {
+        Map<String, ActiveEffect> effects = ACTIVE.get(player.getUuid());
 
-    private static void clearAllKnownModifiers(ServerPlayerEntity player) {
-        for (MealEffect effect : MealEffect.all()) {
-            if (effect.ambientAttribute() == null) continue;
-            EntityAttributeInstance instance = player.getAttributeInstance(effect.ambientAttribute());
-            if (instance != null) instance.removeModifier(effect.modifierId());
+        if (effects == null) {
+            return List.of();
         }
+
+        return effects.values().stream()
+                .map(effect -> new ActiveMeal(
+                        effect.ambient(),
+                        effect.condition(),
+                        effect.activated()
+                ))
+                .toList();
     }
 }

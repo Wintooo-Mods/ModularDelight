@@ -9,6 +9,7 @@ import net.minecraft.client.item.ModelPredicateProviderRegistry;
 import net.minecraft.client.render.RenderLayer;
 import net.wintooo.modulardelight.content.block.ModBlocks;
 import net.wintooo.modulardelight.content.item.custom.MealColor;
+import net.wintooo.modulardelight.content.network.ClientNetworking;
 import net.wintooo.modulardelight.content.screen.ModScreenHandlers;
 import net.wintooo.modulardelight.content.item.custom.tooltip.StockpotTooltip;
 import net.wintooo.modulardelight.content.screen.StockpotScreen;
@@ -25,6 +26,8 @@ public class ModularDelightClient implements ClientModInitializer {
 
     @Override
     public void onInitializeClient() {
+        ClientNetworking.register();
+
         ModelPredicateProviderRegistry.register(ModItems.MODULAR_MEAL, ModularDelight.id("pattern"),
                 (stack, world, entity, seed) -> ModularMealItem.getPatternModelIndex(stack));
 

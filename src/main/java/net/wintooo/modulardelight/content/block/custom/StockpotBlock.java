@@ -18,6 +18,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
@@ -42,6 +43,7 @@ import net.wintooo.modulardelight.content.block.custom.entity.StockpotBlockEntit
 
 import org.jetbrains.annotations.Nullable;
 import vectorwing.farmersdelight.common.block.state.CookingPotSupport;
+import vectorwing.farmersdelight.common.registry.ModSounds;
 
 import static vectorwing.farmersdelight.common.tag.ModTags.HEAT_SOURCES;
 
@@ -191,12 +193,12 @@ public class StockpotBlock extends Block implements Waterloggable, BlockEntityPr
     public void randomDisplayTick(BlockState state, World world, BlockPos pos, Random random) {
         BlockEntity blockEntity = world.getBlockEntity(pos);
         if (blockEntity instanceof StockpotBlockEntity stockpot && stockpot.isHeated()) {
+            SoundEvent boilSound = !stockpot.getStock().isEmpty() ? ModSounds.BLOCK_COOKING_POT_BOIL_SOUP.get() : ModSounds.BLOCK_COOKING_POT_BOIL.get();
+            double x = (double)pos.getX() + (double)0.5F;
+            double y = pos.getY();
+            double z = (double)pos.getZ() + (double)0.5F;
             if (random.nextInt(10) == 0) {
-                double x = pos.getX() + 0.5D;
-                double y = pos.getY();
-                double z = pos.getZ() + 0.5D;
-                world.playSound(x, y, z, SoundEvents.BLOCK_LAVA_POP, SoundCategory.BLOCKS, 0.5F,
-                        random.nextFloat() * 0.2F + 0.9F, false);
+                world.playSound(x, y, z, boilSound, SoundCategory.BLOCKS, 0.5F, random.nextFloat() * 0.2F + 0.9F, false);
             }
         }
     }

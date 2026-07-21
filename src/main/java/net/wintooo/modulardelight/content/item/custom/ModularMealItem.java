@@ -80,10 +80,24 @@ public class ModularMealItem extends Item {
     }
 
     private void grantDigestion(ServerPlayerEntity player, ItemStack stack) {
-        MealEffect composite = resolveComposite(getIngredientIds(stack));
-        if (composite == null) return;
+        List<Identifier> ids = getIngredientIds(stack);
 
-        DigestionManager.grant(player, composite, DIGESTION_DURATION_TICKS);
+        MealEffect ambient = sourceEffect(ids.get(SLOT_AMBIENT));
+        MealEffect condition = sourceEffect(ids.get(SLOT_CONDITION));
+        MealEffect activated = sourceEffect(ids.get(SLOT_ACTIVATED));
+
+        if (ambient == null || condition == null || activated == null) return;
+
+        MealEffect composite = MealEffect.combine(ambient, condition, activated);
+
+        DigestionManager.grant(
+                player,
+                composite,
+                ambient,
+                condition,
+                activated,
+                DIGESTION_DURATION_TICKS
+        );
         player.addStatusEffect(new StatusEffectInstance(
                 ModStatusEffects.DIGESTION, DIGESTION_DURATION_TICKS, 0, true, false));
     }
@@ -148,13 +162,8 @@ public class ModularMealItem extends Item {
                 .toList();
 
         MealEffect composite = resolveComposite(ingredientIds);
-        List<Text> descriptionLines = composite == null ? List.of() : List.of(
-                Text.translatable("tooltip.modulardelight.meal.description.line1",
-                        composite.ambientDescription().apply(composite.difficulty().multiplier())),
-                Text.translatable("tooltip.modulardelight.meal.description.line2",
-                        composite.conditionDescription(),
-                        composite.activatedDescription().apply(composite.difficulty().multiplier()))
-        );
+        List<Text> descriptionLines =
+                composite == null ? List.of() : composite.getMealTooltip();
 
         return Optional.of(new MealSummaryTooltip.Data(descriptionLines, ingredientStacks));
     }

@@ -8,6 +8,7 @@ import net.minecraft.util.Identifier;
 
 import net.wintooo.modulardelight.content.block.ModBlocks;
 import net.wintooo.modulardelight.content.block.custom.entity.ModBlockEntities;
+import net.wintooo.modulardelight.content.network.ModNetworking;
 import net.wintooo.modulardelight.content.screen.ModScreenHandlers;
 import net.wintooo.modulardelight.content.loot.ModLootFunctions;
 import net.wintooo.modulardelight.content.util.DigestionManager;
@@ -22,6 +23,7 @@ public class ModularDelight implements ModInitializer {
 
     @Override
     public void onInitialize() {
+        ModNetworking.registerServer();
         ModItems.load();
         ModBlocks.load();
         ModBlockEntities.load();
