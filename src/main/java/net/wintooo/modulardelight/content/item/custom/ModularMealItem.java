@@ -3,6 +3,7 @@ package net.wintooo.modulardelight.content.item.custom;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.FoodComponent;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -31,6 +32,11 @@ public class ModularMealItem extends Item {
     private static final int SLOT_CONDITION = 1;
     private static final int SLOT_ACTIVATED = 2;
     private static final int DIGESTION_DURATION_TICKS = 6000;
+
+    private static final int MIN_HUNGER_PER_INGREDIENT = 1;
+    private static final float MIN_SATURATION_MODIFIER_PER_INGREDIENT = 0.1f;
+
+    private record FoodStats(int hunger, float saturationModifier) {}
 
     public ModularMealItem(Settings settings) {
         super(settings);
@@ -68,6 +74,7 @@ public class ModularMealItem extends Item {
     public ItemStack finishUsing(ItemStack stack, World world, LivingEntity user) {
         if (!world.isClient && user instanceof ServerPlayerEntity player && isComplete(stack)) {
             grantDigestion(player, stack);
+            applyFoodStats(player, stack);
         }
 
         ItemStack remainder = super.finishUsing(stack, world, user);
@@ -77,6 +84,35 @@ public class ModularMealItem extends Item {
         }
 
         return remainder;
+    }
+
+    private void applyFoodStats(ServerPlayerEntity player, ItemStack stack) {
+        FoodStats stats = computeFoodStats(getIngredientIds(stack));
+        player.getHungerManager().add(stats.hunger(), stats.saturationModifier());
+    }
+
+    private static FoodStats computeFoodStats(List<Identifier> ingredientIds) {
+        int totalHunger = 0;
+        float totalSaturationModifier = 0f;
+
+        for (Identifier id : ingredientIds) {
+            Item ingredient = Registries.ITEM.get(id);
+            FoodComponent food = ingredient.getFoodComponent();
+
+            if (food == null) {
+                totalHunger += MIN_HUNGER_PER_INGREDIENT;
+                totalSaturationModifier += MIN_SATURATION_MODIFIER_PER_INGREDIENT;
+            } else {
+                totalHunger += Math.max(MIN_HUNGER_PER_INGREDIENT, food.getHunger() / 2);
+                totalSaturationModifier += food.getSaturationModifier() / 2f;
+            }
+        }
+
+        float averageSaturationModifier = ingredientIds.isEmpty()
+                ? MIN_SATURATION_MODIFIER_PER_INGREDIENT
+                : totalSaturationModifier / ingredientIds.size();
+
+        return new FoodStats(totalHunger, averageSaturationModifier);
     }
 
     private void grantDigestion(ServerPlayerEntity player, ItemStack stack) {

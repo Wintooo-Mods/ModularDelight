@@ -8,6 +8,9 @@ import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.attribute.EntityAttributeInstance;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtElement;
+import net.minecraft.nbt.NbtList;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.wintooo.modulardelight.content.effect.ModStatusEffects;
 import net.wintooo.modulardelight.content.item.custom.MealEffect;
@@ -228,5 +231,46 @@ public class DigestionManager {
                         effect.activated()
                 ))
                 .toList();
+    }
+
+    private static final String NBT_KEY = "ModularDelightDigestion";
+
+    public static void writeToNbt(ServerPlayerEntity player, NbtCompound nbt) {
+        Map<String, ActiveEffect> active = ACTIVE.get(player.getUuid());
+        if (active == null || active.isEmpty()) return;
+
+        NbtList list = new NbtList();
+        for (ActiveEffect effect : active.values()) {
+            NbtCompound entry = new NbtCompound();
+            entry.putString("Ambient", effect.ambient().id());
+            entry.putString("Condition", effect.condition().id());
+            entry.putString("Activated", effect.activated().id());
+            entry.putInt("Remaining", effect.remainingTicks());
+            list.add(entry);
+        }
+        nbt.put(NBT_KEY, list);
+    }
+
+    public static void readFromNbt(ServerPlayerEntity player, NbtCompound nbt) {
+        if (!nbt.contains(NBT_KEY, NbtElement.LIST_TYPE)) return;
+        NbtList list = nbt.getList(NBT_KEY, NbtElement.COMPOUND_TYPE);
+
+        Map<String, ActiveEffect> restored = new HashMap<>();
+        for (NbtElement element : list) {
+            NbtCompound entry = (NbtCompound) element;
+            MealEffect ambient = MealEffect.byId(entry.getString("Ambient"));
+            MealEffect condition = MealEffect.byId(entry.getString("Condition"));
+            MealEffect activated = MealEffect.byId(entry.getString("Activated"));
+            int remaining = entry.getInt("Remaining");
+
+            if (ambient == null || condition == null || activated == null || remaining <= 0) continue;
+
+            MealEffect composite = MealEffect.combine(ambient, condition, activated);
+            restored.put(composite.id(), new ActiveEffect(composite, ambient, condition, activated, remaining));
+        }
+
+        if (!restored.isEmpty()) {
+            ACTIVE.put(player.getUuid(), restored);
+        }
     }
 }

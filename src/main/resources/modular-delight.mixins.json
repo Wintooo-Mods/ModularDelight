@@ -5,7 +5,8 @@
   "mixins": [
     "AbstractInventoryScreenMixin",
     "ItemStackTooltipDataMixin",
-    "LivingEntityAttackMixin"
+    "LivingEntityAttackMixin",
+    "PlayerEntityMixin"
   ],
   "injectors": {
     "defaultRequire": 1

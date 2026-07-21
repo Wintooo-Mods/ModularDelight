@@ -26,7 +26,6 @@ public record MealProperty(String id, TagKey<Item> tag, Identifier icon, String 
     public static final MealProperty UNSTABLE = register("unstable");
     public static final MealProperty FIERY = register("fiery");
     public static final MealProperty GANGLY = register("gangly");
-    public static final MealProperty LUCKY = register("lucky");
     public static final MealProperty SUREFOOTED = register("surefooted");
 
     private static MealProperty register(String id) {

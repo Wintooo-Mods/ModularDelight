@@ -91,10 +91,6 @@
   "tooltip.modulardelight.effect.gangly.condition": "you land a hit from 4.5+ blocks away",
   "tooltip.modulardelight.effect.gangly.activated": "recover a burst of health",
 
-  "tooltip.modulardelight.effect.lucky.ambient": "grants you +%s luck",
-  "tooltip.modulardelight.effect.lucky.condition": "you survive a near-fatal hit",
-  "tooltip.modulardelight.effect.lucky.activated": "gain Regeneration %s for %ss",
-
   "tooltip.modulardelight.effect.surefooted.ambient": "lets you step up low ledges",
   "tooltip.modulardelight.effect.surefooted.condition": "you take fall damage",
   "tooltip.modulardelight.effect.surefooted.activated": "gain Health Boost %s for %ss",

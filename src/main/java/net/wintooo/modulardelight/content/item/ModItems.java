@@ -11,8 +11,8 @@ public class ModItems {
             new ModularMealItem(new Item.Settings()
                     .maxCount(16)
                     .food(new net.minecraft.item.FoodComponent.Builder()
-                            .hunger(6)
-                            .saturationModifier(0.6f)
+                            .hunger(0)
+                            .saturationModifier(0f)
                             .alwaysEdible()
                             .build())));
 

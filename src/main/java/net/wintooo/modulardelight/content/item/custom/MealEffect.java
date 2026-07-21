@@ -356,30 +356,6 @@ public record MealEffect(
             200
     ));
 
-    public static final MealEffect LUCKY = register(new MealEffect(
-            "lucky",
-            MealProperty.LUCKY,
-            EntityAttributes.GENERIC_LUCK,
-            1.0,
-            EntityAttributeModifier.Operation.ADDITION,
-            mult -> Text.translatable("tooltip.modulardelight.effect.lucky.ambient",
-                    Math.round(1.0 * mult)),
-            null,
-            null,
-            (player, source, amount) -> {
-                float healthAfter = player.getHealth() - amount;
-                return healthAfter > 0.0f && healthAfter <= 2.0f;
-            },
-            null,
-            ConditionDifficulty.HARD,
-            Text.translatable("tooltip.modulardelight.effect.lucky.condition"),
-            (player, mult) -> player.addStatusEffect(new StatusEffectInstance(StatusEffects.REGENERATION,
-                    scaledDuration(5 * 20, mult), scaledAmplifier(0, mult), false, true)),
-            mult -> Text.translatable("tooltip.modulardelight.effect.lucky.activated",
-                    level(scaledAmplifier(0, mult)), scaledDuration(5 * 20, mult) / 20),
-            600
-    ));
-
     public static final MealEffect SUREFOOTED = register(new MealEffect(
             "surefooted",
             MealProperty.SUREFOOTED,
@@ -445,10 +421,6 @@ public record MealEffect(
 
     public static MealEffect byId(String id) {
         return REGISTRY.get(id);
-    }
-
-    public static Iterable<MealEffect> all() {
-        return REGISTRY.values();
     }
 
     public static MealEffect byProperty(MealProperty property) {
