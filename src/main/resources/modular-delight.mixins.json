@@ -1,14 +1,15 @@
 {
-	"required": true,
-	"package": "net.wintooo.modulardelight.mixin",
-	"compatibilityLevel": "JAVA_17",
-	"mixins": [
-		"ExampleMixin"
-	],
-	"injectors": {
-		"defaultRequire": 1
-	},
-	"overwrites": {
-		"requireAnnotations": true
+  "required": true,
+  "package": "net.wintooo.modulardelight.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "mixins": [
+    "ItemStackTooltipDataMixin",
+    "LivingEntityAttackMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "overwrites": {
+    "requireAnnotations": true
 	}
 }

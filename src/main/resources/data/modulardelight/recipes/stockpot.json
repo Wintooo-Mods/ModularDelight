@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "G": {
+      "item": "minecraft:glass"
+    },
+    "W": {
+      "tag": "c:buckets/water"
+    },
+    "i": {
+      "tag": "c:iron_ingots"
+    }
+  },
+  "pattern": [
+    "iGi",
+    "iWi",
+    "iii"
+  ],
+  "result": {
+    "item": "modulardelight:stockpot"
+  },
+  "show_notification": true
+}

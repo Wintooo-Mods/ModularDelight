@@ -1,0 +1,104 @@
+{
+  "block.modulardelight.stockpot": "Stockpot",
+  "container.modulardelight.stockpot": "Stockpot",
+
+  "item.modulardelight.modular_meal": "Modular Meal",
+  "item.modulardelight.modular_meal.name.porridge": "%s Porridge",
+  "item.modulardelight.modular_meal.name.curry": "%s & %s Curry",
+  "item.modulardelight.modular_meal.name.casserole": "%s & %s Casserole",
+  "item.modulardelight.modular_meal.name.soup": "%s & %s Soup",
+  "item.modulardelight.modular_meal.name.stew": "%s, %s & %s Stew",
+
+  "effect.modulardelight.digestion": "Digestion",
+
+  "tooltip.modulardelight.stockpot.heated": "Heated",
+  "tooltip.modulardelight.stockpot.needs_heat": "Needs heat from below",
+  "tooltip.modulardelight.stockpot.empty": "Empty",
+  "tooltip.modulardelight.stockpot.single_serving": "Holds 1 serving of:",
+  "tooltip.modulardelight.stockpot.many_servings": "Holds %s servings of:",
+
+  "tooltip.modulardelight.difficulty.trivial": "Trivial",
+  "tooltip.modulardelight.difficulty.easy": "Easy",
+  "tooltip.modulardelight.difficulty.moderate": "Moderate",
+  "tooltip.modulardelight.difficulty.hard": "Hard",
+  "tooltip.modulardelight.difficulty.extreme": "Extreme",
+
+  "tooltip.modulardelight.property.hearty": "Hearty",
+  "tooltip.modulardelight.property.tough": "Tough",
+  "tooltip.modulardelight.property.fierce": "Fierce",
+  "tooltip.modulardelight.property.explosive": "Explosive",
+  "tooltip.modulardelight.property.speedy": "Speedy",
+  "tooltip.modulardelight.property.nimble": "Nimble",
+  "tooltip.modulardelight.property.aquatic": "Aquatic",
+  "tooltip.modulardelight.property.stealthy": "Stealthy",
+  "tooltip.modulardelight.property.nocturnal": "Nocturnal",
+  "tooltip.modulardelight.property.skyborne": "Skyborne",
+  "tooltip.modulardelight.property.unstable": "Unstable",
+  "tooltip.modulardelight.property.gangly": "Gangly",
+  "tooltip.modulardelight.property.lucky": "Lucky",
+  "tooltip.modulardelight.property.surefooted": "Surefooted",
+
+
+  "tooltip.modulardelight.effect.hearty.ambient": "grants you +%s heart(s)",
+  "tooltip.modulardelight.effect.hearty.condition": "you drop below 5 hearts",
+  "tooltip.modulardelight.effect.hearty.activated": "gain Absorption for %ss",
+
+  "tooltip.modulardelight.effect.tough.ambient": "grants you +%s armor",
+  "tooltip.modulardelight.effect.tough.condition": "you are hit for more than 4 hearts",
+  "tooltip.modulardelight.effect.tough.activated": "gain Resistance %s for %ss",
+
+  "tooltip.modulardelight.effect.fierce.ambient": "grants you +%s attack damage",
+  "tooltip.modulardelight.effect.fierce.condition": "you deal more than 2 hearts of damage to an entity",
+  "tooltip.modulardelight.effect.fierce.activated": "gain Strength %s for %ss",
+
+  "tooltip.modulardelight.effect.explosive.ambient": "grants you +%s%% knockback resistance",
+  "tooltip.modulardelight.effect.explosive.condition": "you take explosion damage",
+  "tooltip.modulardelight.effect.explosive.activated": "erupt in an explosion",
+
+  "tooltip.modulardelight.effect.speedy.ambient": "grants you +%s%% movement speed",
+  "tooltip.modulardelight.effect.speedy.condition": "you start sprinting",
+  "tooltip.modulardelight.effect.speedy.activated": "gain Speed %s for %ss",
+
+  "tooltip.modulardelight.effect.nimble.ambient": "makes you light on your feet",
+  "tooltip.modulardelight.effect.nimble.condition": "you rise",
+  "tooltip.modulardelight.effect.nimble.activated": "gain Jump Boost %s for %ss",
+
+  "tooltip.modulardelight.effect.aquatic.ambient": "makes you at home in the water",
+  "tooltip.modulardelight.effect.aquatic.condition": "you are submerged in water",
+  "tooltip.modulardelight.effect.aquatic.activated": "gain Water Breathing & Dolphin's Grace for %s min",
+
+  "tooltip.modulardelight.effect.stealthy.ambient": "makes you move unseen",
+  "tooltip.modulardelight.effect.stealthy.condition": "you sneak",
+  "tooltip.modulardelight.effect.stealthy.activated": "gain Invisibility for %ss",
+
+  "tooltip.modulardelight.effect.nocturnal.ambient": "gives you keen night senses",
+  "tooltip.modulardelight.effect.nocturnal.condition": "it's night",
+  "tooltip.modulardelight.effect.nocturnal.activated": "gain Night Vision for %ss",
+
+  "tooltip.modulardelight.effect.skyborne.ambient": "makes you unbothered by heights",
+  "tooltip.modulardelight.effect.skyborne.condition": "you fall",
+  "tooltip.modulardelight.effect.skyborne.activated": "gain Slow Falling for %ss",
+
+  "tooltip.modulardelight.effect.unstable.ambient": "leaves you feeling untethered",
+  "tooltip.modulardelight.effect.unstable.condition": "the dice are rolled",
+  "tooltip.modulardelight.effect.unstable.activated": "teleport a short distance",
+
+  "tooltip.modulardelight.effect.fiery.ambient": "makes you immune to fire",
+  "tooltip.modulardelight.effect.fiery.condition": "you take fire damage",
+  "tooltip.modulardelight.effect.fiery.activated": "ignite nearby enemies for %ss",
+
+  "tooltip.modulardelight.effect.gangly.ambient": "extends your attack range by %s block(s)",
+  "tooltip.modulardelight.effect.gangly.condition": "you land a hit from 4.5+ blocks away",
+  "tooltip.modulardelight.effect.gangly.activated": "recover a burst of health",
+
+  "tooltip.modulardelight.effect.lucky.ambient": "grants you +%s luck",
+  "tooltip.modulardelight.effect.lucky.condition": "you survive a near-fatal hit",
+  "tooltip.modulardelight.effect.lucky.activated": "gain Regeneration %s for %ss",
+
+  "tooltip.modulardelight.effect.surefooted.ambient": "lets you step up low ledges",
+  "tooltip.modulardelight.effect.surefooted.condition": "you take fall damage",
+  "tooltip.modulardelight.effect.surefooted.activated": "gain Health Boost %s for %ss",
+
+  "tooltip.modulardelight.meal.description.line1": "When eaten, this meal %s.",
+  "tooltip.modulardelight.meal.description.line2": "If %s, you %s."
+}

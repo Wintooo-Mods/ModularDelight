@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "id": "modular-delight",
+  "id": "modulardelight",
   "version": "${version}",
   "name": "Modular Delight",
   "description": "Adds a modular cooking system to Farmer's Delight.",
@@ -9,10 +9,10 @@
   ],
   "contact": {
     "homepage": "https://modrinth.com/mod/modular-delight",
-    "sources": "https://github.com/FabricMC/fabric-example-mod"
+    "sources": "https://github.com/Wintooo-Mods/Modular-Delight"
   },
   "license": "MIT",
-  "icon": "assets/modular-delight/icon.png",
+  "icon": "assets/modulardelight/icon.png",
   "environment": "*",
   "entrypoints": {
     "main": [
@@ -30,8 +30,9 @@
   ],
   "depends": {
     "fabricloader": ">=0.19.3",
-    "minecraft": "~1.20.1",
+    "minecraft": ">=1.20 <=1.20.1",
     "java": ">=17",
-    "fabric-api": "*"
+    "fabric-api": "*",
+    "farmersdelight": "*"
   }
 }

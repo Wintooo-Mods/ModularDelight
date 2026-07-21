@@ -1,0 +1,9 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "modulardelight:item/stew/layer0",
+    "layer1": "modulardelight:item/stew/layer1",
+    "layer2": "modulardelight:item/stew/layer2",
+    "layer3": "modulardelight:item/stew/layer3"
+  }
+}

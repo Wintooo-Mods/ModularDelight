@@ -1,0 +1,8 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "modulardelight:item/casserole/layer0",
+    "layer1": "modulardelight:item/casserole/layer1",
+    "layer2": "modulardelight:item/casserole/layer2"
+  }
+}
