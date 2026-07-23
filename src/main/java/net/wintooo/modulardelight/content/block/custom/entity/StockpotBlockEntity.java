@@ -20,6 +20,7 @@ import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -47,6 +48,7 @@ public class StockpotBlockEntity extends BlockEntity implements SidedInventory, 
     public static final int SLOT_BOWL = 4;
     public static final int SLOT_OUTPUT = 5;
     public static final int INVENTORY_SIZE = 6;
+    public static final int MAX_STOCK_SERVINGS = 64;
     private static final int COOK_TIME_TOTAL = 400;
     private float storedExperience = 0.0F;
 
@@ -187,25 +189,36 @@ public class StockpotBlockEntity extends BlockEntity implements SidedInventory, 
     private boolean canAccumulateStock() {
         ItemStack prospective = computeResult();
         if (prospective.isEmpty()) return false;
+
         ItemStack stock = inventory.get(SLOT_STOCK);
         if (stock.isEmpty()) return true;
-        if (!(ItemStack.areItemsEqual(stock, prospective) && ItemStack.areEqual(stock, prospective))) return false;
-        return stock.getCount() < stock.getMaxCount();
+
+        if (!ItemStack.canCombine(stock, prospective)) {
+            return false;
+        }
+
+        return stock.getCount() < MAX_STOCK_SERVINGS;
     }
 
+    private static final float EXPERIENCE_PER_CRAFT = 0.35F;
+
     private ItemStack computeResult() {
-        List<Identifier> ids = new ArrayList<>(3);
+        List<ItemStack> ingredients = new ArrayList<>(3);
         for (int i = SLOT_AMBIENT; i <= SLOT_ACTIVATED; i++) {
             ItemStack stack = inventory.get(i);
             if (!isValidIngredientForSlot(i, stack)) return ItemStack.EMPTY;
-            ids.add(Registries.ITEM.getId(stack.getItem()));
+            ingredients.add(stack.copyWithCount(1));
         }
-        return ModularMealItem.create(ids);
+        return ModularMealItem.create(ingredients);
     }
 
     private void craft() {
         ItemStack result = computeResult();
-        if (result.isEmpty()) return;
+        if (result.isEmpty()) {
+            return;
+        }
+
+        storedExperience += EXPERIENCE_PER_CRAFT;
 
         ItemStack stock = inventory.get(SLOT_STOCK);
         if (stock.isEmpty()) {
@@ -214,9 +227,20 @@ public class StockpotBlockEntity extends BlockEntity implements SidedInventory, 
             stock.increment(result.getCount());
         }
 
-        for (int i = SLOT_AMBIENT; i <= SLOT_ACTIVATED; i++) {
-            inventory.get(i).decrement(1);
+        for (int slot = SLOT_AMBIENT; slot <= SLOT_ACTIVATED; slot++) {
+            ItemStack ingredient = inventory.get(slot);
+            if (ingredient.isEmpty()) continue;
+
+            ItemStack consumed = ingredient.copyWithCount(1);
+            ItemStack remainder = consumed.getRecipeRemainder();
+            ingredient.decrement(1);
+
+            if (!remainder.isEmpty() && world != null) {
+                ItemScatterer.spawn(world, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, remainder);
+            }
         }
+
+        markDirty();
     }
 
     private boolean serveStockIntoOutput() {
@@ -225,11 +249,11 @@ public class StockpotBlockEntity extends BlockEntity implements SidedInventory, 
         if (stock.isEmpty() || bowls.isEmpty()) return false;
 
         ItemStack output = inventory.get(SLOT_OUTPUT);
-        if (!output.isEmpty() && !(ItemStack.areItemsEqual(output, stock) && ItemStack.areEqual(output, stock))) {
+        if (!output.isEmpty() && !ItemStack.canCombine(output, stock)) {
             return false;
         }
 
-        int space = output.isEmpty() ? stock.getMaxCount() : output.getMaxCount() - output.getCount();
+        int space = output.isEmpty() ? MAX_STOCK_SERVINGS : output.getMaxCount() - output.getCount();
         int amount = Math.min(Math.min(stock.getCount(), bowls.getCount()), space);
         if (amount <= 0) return false;
 
@@ -259,10 +283,6 @@ public class StockpotBlockEntity extends BlockEntity implements SidedInventory, 
 
     public ItemStack getStock() {
         return inventory.get(SLOT_STOCK);
-    }
-
-    public boolean hasStock() {
-        return !getStock().isEmpty();
     }
 
     public static ItemStack getStockFromItem(ItemStack stack) {
@@ -399,13 +419,18 @@ public class StockpotBlockEntity extends BlockEntity implements SidedInventory, 
 
     public static boolean isValidAmbientIngredient(ItemStack stack) {
         MealEffect effect = resolveEffect(stack);
-        return effect != null && effect.ambientAttribute() != null;
+        if (effect == null) return false;
+        return !effect.ambientAttributes().isEmpty()
+                || !effect.ambientStatusEffects().isEmpty()
+                || !effect.ambientDamageReactions().isEmpty()
+                || effect.ambientAlwaysEdible();
     }
 
     public static boolean isValidConditionIngredient(ItemStack stack) {
         MealEffect effect = resolveEffect(stack);
         return effect != null
-                && (effect.tickTrigger() != null || effect.damageTrigger() != null || effect.attackTrigger() != null);
+                && (effect.tickTrigger() != null || effect.damageTrigger() != null
+                || effect.attackTrigger() != null || effect.eatTrigger() != null);
     }
 
     public static boolean isValidActivatedIngredient(ItemStack stack) {
@@ -444,8 +469,18 @@ public class StockpotBlockEntity extends BlockEntity implements SidedInventory, 
     }
 
     public void awardUsedRecipesAndPopExperience(ServerWorld world, Vec3d pos) {
-        ExperienceOrbEntity.spawn(world, pos, MathHelper.floor(storedExperience));
-        storedExperience = 0;
+        int xp = MathHelper.floor(storedExperience);
+        float fractional = storedExperience - xp;
+
+        if (world.random.nextFloat() < fractional) {
+            xp++;
+        }
+
+        if (xp > 0) {
+            ExperienceOrbEntity.spawn(world, pos, xp);
+        }
+
+        storedExperience = 0.0F;
         markDirty();
     }
 }

@@ -1,0 +1,18 @@
+{
+  "name": "Bland",
+  "ambient": { "description": "makes you easy to overlook" },
+  "condition": {
+    "type": "modulardelight:sneaking",
+    "multiplier": 0.5,
+    "cooldown_ticks": 400,
+    "description": "you sneak"
+  },
+  "activated": {
+    "action": {
+      "type": "modulardelight:status_effect",
+      "effect": "minecraft:invisibility",
+      "duration_ticks": 100
+    },
+    "description": "gain Invisibility for %ss"
+  }
+}

@@ -29,7 +29,7 @@ public final class MealPropertyTooltip {
         public int getWidth(TextRenderer textRenderer) {
             int max = 0;
             for (MealProperty property : data.properties()) {
-                Text text = Text.translatable(property.translationKey());
+                Text text = property.name();
                 max = Math.max(max, ICON_SIZE + ICON_TEXT_GAP + textRenderer.getWidth(text));
             }
             return max;
@@ -40,7 +40,7 @@ public final class MealPropertyTooltip {
             int lineY = y;
             for (MealProperty property : data.properties()) {
                 context.drawTexture(property.icon(), x, lineY, 0, 0, ICON_SIZE, ICON_SIZE, ICON_SIZE, ICON_SIZE);
-                context.drawText(textRenderer, Text.translatable(property.translationKey()),
+                context.drawText(textRenderer, property.name(),
                         x + ICON_SIZE + ICON_TEXT_GAP, lineY + 1, 0xCF856E, false);
                 lineY += LINE_HEIGHT;
             }

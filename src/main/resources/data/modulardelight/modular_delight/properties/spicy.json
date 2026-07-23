@@ -1,0 +1,27 @@
+{
+  "name": "Spicy",
+  "ambient": {
+    "attribute": {
+      "id": "minecraft:generic.attack_damage",
+      "amount": 1.0,
+      "operation": "addition",
+      "description": "grants you +%s attack damage"
+    }
+  },
+  "condition": {
+    "type": "modulardelight:attack",
+    "min_amount": 4.0,
+    "multiplier": 1.5,
+    "cooldown_ticks": 160,
+    "description": "you deal more than 2 hearts of damage to an entity"
+  },
+  "activated": {
+    "action": {
+      "type": "modulardelight:status_effect",
+      "effect": "minecraft:strength",
+      "duration_ticks": 160,
+      "scale_amplifier": true
+    },
+    "description": "gain Strength %s for %ss"
+  }
+}

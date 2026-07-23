@@ -1,5 +1,7 @@
 package net.wintooo.modulardelight.content.item.custom;
 
+import net.minecraft.util.Identifier;
+
 public enum MealPattern {
     UNIFORM(0.0f, "porridge"),
     AMBIENT_CONDITION(0.25f, "curry"),
@@ -23,10 +25,10 @@ public enum MealPattern {
         return nameKey;
     }
 
-    public static MealPattern resolve(MealProperty ambient, MealProperty condition, MealProperty activated) {
-        boolean ambientEqCondition = ambient == condition;
-        boolean ambientEqActivated = ambient == activated;
-        boolean conditionEqActivated = condition == activated;
+    public static MealPattern resolve(Identifier ambientId, Identifier conditionId, Identifier activatedId) {
+        boolean ambientEqCondition = ambientId.equals(conditionId);
+        boolean ambientEqActivated = ambientId.equals(activatedId);
+        boolean conditionEqActivated = conditionId.equals(activatedId);
 
         if (ambientEqCondition && ambientEqActivated) return UNIFORM;
         if (ambientEqCondition) return AMBIENT_CONDITION;

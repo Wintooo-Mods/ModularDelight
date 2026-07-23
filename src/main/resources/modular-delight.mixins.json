@@ -6,6 +6,7 @@
     "AbstractInventoryScreenMixin",
     "ItemStackTooltipDataMixin",
     "LivingEntityAttackMixin",
+    "LivingEntityEatMixin",
     "PlayerEntityMixin"
   ],
   "injectors": {

@@ -63,12 +63,7 @@ public class StockpotScreenHandler extends ScreenHandler {
             }
         });
 
-        this.addSlot(new Slot(inventory, StockpotBlockEntity.SLOT_OUTPUT, 124, 55) {
-            @Override
-            public boolean canInsert(ItemStack stack) {
-                return false;
-            }
-        });
+        this.addSlot(new StockpotResultSlot(inventory, StockpotBlockEntity.SLOT_OUTPUT, 124, 55));
 
         for (int row = 0; row < 3; ++row) {
             for (int column = 0; column < 9; ++column) {

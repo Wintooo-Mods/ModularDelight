@@ -1,0 +1,23 @@
+{
+  "name": "Delicious",
+  "ambient": {
+    "always_edible": true,
+    "description": "lets you eat anytime"
+  },
+  "condition": {
+    "type": "modulardelight:eat_any",
+    "multiplier": 0.5,
+    "cooldown_ticks": 100,
+    "description": "you eat something"
+  },
+  "activated": {
+    "action": {
+      "type": "modulardelight:status_effect",
+      "effect": "minecraft:saturation",
+      "duration_ticks": 80,
+      "min_duration_ticks": 20,
+      "scale_amplifier": false
+    },
+    "description": "gain Saturation for %ss"
+  }
+}

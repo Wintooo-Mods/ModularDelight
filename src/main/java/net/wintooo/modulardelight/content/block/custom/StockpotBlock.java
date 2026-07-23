@@ -34,6 +34,7 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.util.shape.VoxelShape;
+import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
@@ -55,7 +56,18 @@ public class StockpotBlock extends Block implements Waterloggable, BlockEntityPr
     public static final BooleanProperty WATERLOGGED = Properties.WATERLOGGED;
     public static final BooleanProperty OPEN = BooleanProperty.of("open");
 
-    protected static final VoxelShape SHAPE = Block.createCuboidShape(1.0D, 0.0D, 1.0D, 15.0D, 12.0D, 15.0D);
+    private static final VoxelShape BASE_SHAPE = Block.createCuboidShape(1.0D, 0.0D, 1.0D, 15.0D, 12.0D, 15.0D);
+    private static final VoxelShape LID_SHAPE = Block.createCuboidShape(1.0D, 12.0D, 1.0D, 15.0D, 14.0D, 15.0D);
+    private static final VoxelShape TRAY_SHAPE = Block.createCuboidShape(0.0D, -1.0D, 0.0D, 16.0D, 0.0D, 16.0D);
+
+    private static final VoxelShape OPEN_SHAPE =
+            VoxelShapes.union(BASE_SHAPE);
+    private static final VoxelShape CLOSED_SHAPE =
+            VoxelShapes.union(BASE_SHAPE, LID_SHAPE);
+    private static final VoxelShape OPEN_WITH_TRAY_SHAPE =
+            VoxelShapes.union(OPEN_SHAPE, TRAY_SHAPE);
+    private static final VoxelShape CLOSED_WITH_TRAY_SHAPE =
+            VoxelShapes.union(CLOSED_SHAPE, TRAY_SHAPE);
 
     public StockpotBlock(Settings settings) {
         super(settings);
@@ -102,12 +114,27 @@ public class StockpotBlock extends Block implements Waterloggable, BlockEntityPr
 
     @Override
     public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
-        return SHAPE;
+        boolean closed = !state.get(OPEN);
+
+        return closed
+                ? CLOSED_SHAPE
+                : OPEN_SHAPE;
     }
 
     @Override
     public VoxelShape getCollisionShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
-        return SHAPE;
+        boolean closed = !state.get(OPEN);
+        boolean tray = state.get(SUPPORT) == CookingPotSupport.TRAY;
+
+        if (tray) {
+            return closed
+                    ? CLOSED_WITH_TRAY_SHAPE
+                    : OPEN_WITH_TRAY_SHAPE;
+        }
+
+        return closed
+                ? CLOSED_SHAPE
+                : OPEN_SHAPE;
     }
 
     @Nullable

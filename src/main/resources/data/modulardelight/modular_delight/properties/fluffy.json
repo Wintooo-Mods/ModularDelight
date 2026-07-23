@@ -1,0 +1,26 @@
+{
+  "name": "Fluffy",
+  "ambient": {
+    "attribute": {
+      "id": "porting_lib:entity_gravity",
+      "amount": -0.25,
+      "operation": "multiply_total",
+      "description": "makes you light as air"
+    }
+  },
+  "condition": {
+    "type": "modulardelight:falling_fast",
+    "min_speed": 0.5,
+    "multiplier": 0.5,
+    "cooldown_ticks": 600,
+    "description": "you fall"
+  },
+  "activated": {
+    "action": {
+      "type": "modulardelight:status_effect",
+      "effect": "minecraft:slow_falling",
+      "duration_ticks": 400
+    },
+    "description": "gain Slow Falling for %ss"
+  }
+}

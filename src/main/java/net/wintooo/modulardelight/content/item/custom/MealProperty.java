@@ -3,36 +3,25 @@ package net.wintooo.modulardelight.content.item.custom;
 import net.minecraft.item.Item;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.tag.TagKey;
+import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
-import net.wintooo.modulardelight.ModularDelight;
 
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public record MealProperty(String id, TagKey<Item> tag, Identifier icon, String translationKey) {
-    private static final Map<String, MealProperty> REGISTRY = new LinkedHashMap<>();
+public record MealProperty(Identifier id, TagKey<Item> tag, Identifier icon, Text name) {
+    private static final Map<Identifier, MealProperty> REGISTRY = new LinkedHashMap<>();
+    private static final Identifier DEFAULT_ICON =
+            new Identifier("modulardelight", "textures/gui/sprites/property/property.png");
 
-    public static final MealProperty HEARTY = register("hearty");
-    public static final MealProperty TOUGH = register("tough");
-    public static final MealProperty FIERCE = register("fierce");
-    public static final MealProperty EXPLOSIVE = register("explosive");
-    public static final MealProperty SPEEDY = register("speedy");
-    public static final MealProperty NIMBLE = register("nimble");
-    public static final MealProperty AQUATIC = register("aquatic");
-    public static final MealProperty STEALTHY = register("stealthy");
-    public static final MealProperty NOCTURNAL = register("nocturnal");
-    public static final MealProperty SKYBORNE = register("skyborne");
-    public static final MealProperty UNSTABLE = register("unstable");
-    public static final MealProperty FIERY = register("fiery");
-    public static final MealProperty GANGLY = register("gangly");
-    public static final MealProperty SUREFOOTED = register("surefooted");
+    public static void clear() {
+        REGISTRY.clear();
+    }
 
-    private static MealProperty register(String id) {
-        TagKey<Item> tag = TagKey.of(RegistryKeys.ITEM, ModularDelight.id("properties/" + id));
-        Identifier icon = ModularDelight.id("textures/gui/sprites/property/property.png");
-        String translationKey = "tooltip.modulardelight.property." + id;
-        MealProperty prop = new MealProperty(id, tag, icon, translationKey);
+    public static MealProperty register(Identifier id, Identifier icon, Text name) {
+        TagKey<Item> tag = TagKey.of(RegistryKeys.ITEM, new Identifier(id.getNamespace(), "properties/" + id.getPath()));
+        MealProperty prop = new MealProperty(id, tag, icon == null ? DEFAULT_ICON : icon, name);
         REGISTRY.put(id, prop);
         return prop;
     }
@@ -40,4 +29,5 @@ public record MealProperty(String id, TagKey<Item> tag, Identifier icon, String 
     public static Collection<MealProperty> all() {
         return REGISTRY.values();
     }
+
 }

@@ -1,0 +1,23 @@
+{
+  "name": "Optic",
+  "ambient": {
+    "status_effect": { "id": "minecraft:night_vision", "refresh_ticks": 260, "amplifier": 0 },
+    "description": "gives you keen senses in the dark"
+  },
+  "condition": {
+    "type": "modulardelight:night",
+    "multiplier": 0.5,
+    "cooldown_ticks": 6000,
+    "description": "it's night"
+  },
+  "activated": {
+    "action": {
+      "type": "modulardelight:status_effect",
+      "effect": "minecraft:night_vision",
+      "duration_ticks": 100,
+      "show_particles": true,
+      "show_icon": true
+    },
+    "description": "gain Night Vision for %ss"
+  }
+}

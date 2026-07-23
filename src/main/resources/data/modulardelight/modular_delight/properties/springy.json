@@ -1,0 +1,21 @@
+{
+  "name": "Springy",
+  "ambient": { "description": "makes you bouncy on your feet" },
+  "condition": {
+    "type": "modulardelight:rising",
+    "min_velocity": 0.1,
+    "multiplier": 1.0,
+    "cooldown_ticks": 100,
+    "description": "you rise"
+  },
+  "activated": {
+    "action": {
+      "type": "modulardelight:status_effect",
+      "effect": "minecraft:jump_boost",
+      "duration_ticks": 160,
+      "amplifier": 1,
+      "scale_amplifier": true
+    },
+    "description": "gain Jump Boost %s for %ss"
+  }
+}

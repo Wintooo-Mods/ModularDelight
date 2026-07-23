@@ -19,10 +19,6 @@ public final class ClientDigestionManager {
         ACTIVE.addAll(meals);
     }
 
-    public static List<ActiveMeal> getMeals() {
-        return List.copyOf(ACTIVE);
-    }
-
     public static List<Text> getActiveTooltip() {
         if (ACTIVE.isEmpty()) {
             return List.of();
@@ -55,9 +51,9 @@ public final class ClientDigestionManager {
         MealProperty condition = meal.condition().property();
         MealProperty activated = meal.activated().property();
 
-        Text ambientName = Text.translatable(ambient.translationKey());
-        Text conditionName = Text.translatable(condition.translationKey());
-        Text activatedName = Text.translatable(activated.translationKey());
+        Text ambientName = ambient.name();
+        Text conditionName = condition.name();
+        Text activatedName = activated.name();
 
         boolean ambientEqCondition = ambient == condition;
         boolean ambientEqActivated = ambient == activated;

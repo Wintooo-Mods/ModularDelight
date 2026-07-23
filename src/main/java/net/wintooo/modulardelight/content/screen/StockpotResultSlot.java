@@ -13,6 +13,11 @@ public class StockpotResultSlot extends Slot {
     }
 
     @Override
+    public boolean canInsert(ItemStack stack) {
+        return false;
+    }
+
+    @Override
     public void onTakeItem(PlayerEntity player, ItemStack stack) {
         super.onTakeItem(player, stack);
 
@@ -20,7 +25,7 @@ public class StockpotResultSlot extends Slot {
                 inventory instanceof StockpotBlockEntity stockpot) {
 
             stockpot.awardUsedRecipesAndPopExperience(
-                    (ServerWorld)player.getWorld(),
+                    (ServerWorld) player.getWorld(),
                     player.getPos());
         }
     }

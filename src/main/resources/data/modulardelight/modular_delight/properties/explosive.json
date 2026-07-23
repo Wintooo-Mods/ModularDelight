@@ -1,0 +1,22 @@
+{
+  "name": "Explosive",
+  "ambient": {
+    "attribute": {
+      "id": "minecraft:generic.knockback_resistance",
+      "amount": 0.2,
+      "operation": "addition",
+      "description_divisor": 0.01,
+      "description": "grants you +%s%% knockback resistance"
+    }
+  },
+  "condition": {
+    "type": "modulardelight:damage_source",
+    "damage_type_tags": ["minecraft:is_explosion"],
+    "multiplier": 2.0,
+    "cooldown_ticks": 100,
+    "description": "you take explosion damage"
+  },
+  "activated": {
+    "action": { "type": "modulardelight:explosion", "power": 2.0, "max_power": 4.0 }
+  }
+}

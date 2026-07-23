@@ -1,0 +1,18 @@
+{
+  "name": "Spiny",
+  "ambient": {
+    "damage_reaction": { "type": "modulardelight:reflect_damage", "fraction": 0.25 },
+    "description": "covers you in spikes"
+  },
+  "condition": {
+    "type": "modulardelight:damage_source",
+    "damage_types": ["minecraft:cactus", "minecraft:sweet_berry_bush", "minecraft:thorns"],
+    "attacker_types": ["minecraft:guardian", "minecraft:pufferfish"],
+    "multiplier": 1.5,
+    "cooldown_ticks": 160,
+    "description": "you take damage from anything spiky"
+  },
+  "activated": {
+    "action": { "type": "modulardelight:damage_nearby", "radius": 3.0, "damage": 2.0 }
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "name": "Unstable",
+  "ambient": { "description": "leaves you feeling untethered" },
+  "condition": {
+    "type": "modulardelight:random_chance",
+    "chance": 0.002,
+    "multiplier": 3.0,
+    "cooldown_ticks": 40,
+    "description": "the dice are rolled"
+  },
+  "activated": {
+    "action": { "type": "modulardelight:teleport_random", "range": 8.0, "attempts": 16 }
+  }
+}

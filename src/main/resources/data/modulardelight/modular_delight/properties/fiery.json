@@ -1,0 +1,17 @@
+{
+  "name": "Fiery",
+  "ambient": {
+    "status_effect": { "id": "minecraft:fire_resistance", "refresh_ticks": 260, "amplifier": 0 },
+    "description": "makes you immune to fire"
+  },
+  "condition": {
+    "type": "modulardelight:damage_source",
+    "damage_type_tags": ["minecraft:is_fire"],
+    "multiplier": 1.5,
+    "cooldown_ticks": 600,
+    "description": "you take fire damage"
+  },
+  "activated": {
+    "action": { "type": "modulardelight:ignite_nearby", "radius": 4.0, "fire_ticks": 100 }
+  }
+}

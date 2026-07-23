@@ -1,0 +1,28 @@
+{
+  "name": "Stringy",
+  "ambient": {
+    "attribute": {
+      "id": "reach-entity-attributes:attack_range",
+      "amount": 1.0,
+      "operation": "addition",
+      "description_decimals": 1,
+      "description": "extends your attack range by %s block(s)"
+    }
+  },
+  "condition": {
+    "type": "modulardelight:attack",
+    "min_distance": 4.0,
+    "multiplier": 1.5,
+    "cooldown_ticks": 200,
+    "description": "you land a hit from 4.0+ blocks away"
+  },
+  "activated": {
+    "action": {
+      "type": "modulardelight:status_effect",
+      "effect": "minecraft:haste",
+      "duration_ticks": 400,
+      "scale_amplifier": true
+    },
+    "description": "gain Haste %s for %ss"
+  }
+}

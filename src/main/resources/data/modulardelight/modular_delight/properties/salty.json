@@ -1,0 +1,27 @@
+{
+  "name": "Salty",
+  "ambient": {
+    "attribute": {
+      "id": "porting_lib:swim_speed",
+      "amount": 0.3,
+      "operation": "multiply_total",
+      "description": "makes you at home in the water"
+    }
+  },
+  "condition": {
+    "type": "modulardelight:submerged",
+    "multiplier": 0.5,
+    "cooldown_ticks": 1200,
+    "description": "you are submerged in water"
+  },
+  "activated": {
+    "action": {
+      "type": "modulardelight:multi",
+      "actions": [
+        { "type": "modulardelight:status_effect", "effect": "minecraft:water_breathing", "duration_ticks": 1200 },
+        { "type": "modulardelight:status_effect", "effect": "minecraft:dolphins_grace", "duration_ticks": 1200 }
+      ]
+    },
+    "description": "gain Water Breathing & Dolphin's Grace for %ss"
+  }
+}
