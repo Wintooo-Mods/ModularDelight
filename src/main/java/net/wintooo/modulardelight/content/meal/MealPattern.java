@@ -3,7 +3,7 @@ package net.wintooo.modulardelight.content.meal;
 import net.minecraft.util.Identifier;
 
 public enum MealPattern {
-    UNIFORM(0.0f, "porridge"),
+    UNIFORM(0.1f, "porridge"),
     AMBIENT_CONDITION(0.25f, "curry"),
     AMBIENT_ACTIVATED(0.5f, "casserole"),
     CONDITION_ACTIVATED(0.75f, "soup"),

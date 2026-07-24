@@ -2,7 +2,12 @@
   "block.modulardelight.stockpot": "Stockpot",
   "container.modulardelight.stockpot": "Stockpot",
 
-  "item.modulardelight.modular_meal": "Modular Meal",
+  "modulardelight.advancement.place_stockpot": "Start Mixing!",
+  "modulardelight.advancement.place_stockpot.desc": "Put down a Stockpot and start preparing modular meals!",
+  "modulardelight.advancement.eat_modular_food": "Custom Cooking!",
+  "modulardelight.advancement.eat_modular_food.desc": "Mmm.. something's happening?",
+
+  "item.modulardelight.modular_meal": "Uncraftable Modular Meal",
   "item.modulardelight.modular_meal.name.porridge": "%s Porridge",
   "item.modulardelight.modular_meal.name.curry": "%s & %s Curry",
   "item.modulardelight.modular_meal.name.casserole": "%s & %s Casserole",

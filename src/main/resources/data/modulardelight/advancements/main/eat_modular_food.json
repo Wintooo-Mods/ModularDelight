@@ -1,0 +1,34 @@
+{
+  "parent": "modulardelight:main/place_stockpot",
+  "criteria": {
+    "modular": {
+      "conditions": {
+        "effects": {
+          "modulardelight:digestion": {}
+        }
+      },
+      "trigger": "minecraft:effects_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "description": {
+      "translate": "modulardelight.advancement.eat_modular_food.desc"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "modulardelight:modular_meal"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "modulardelight.advancement.eat_modular_food"
+    }
+  },
+  "requirements": [
+    [
+      "modular"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

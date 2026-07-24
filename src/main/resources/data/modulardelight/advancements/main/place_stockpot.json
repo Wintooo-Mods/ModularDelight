@@ -1,0 +1,37 @@
+{
+  "parent": "farmersdelight:main/place_campfire",
+  "criteria": {
+    "stockpot": {
+      "conditions": {
+        "location": [
+          {
+            "block": "modulardelight:stockpot",
+            "condition": "minecraft:block_state_property"
+          }
+        ]
+      },
+      "trigger": "minecraft:placed_block"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "modulardelight.advancement.place_stockpot.desc"
+    },
+    "frame": "goal",
+    "hidden": false,
+    "icon": {
+      "item": "modulardelight:stockpot"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "modulardelight.advancement.place_stockpot"
+    }
+  },
+  "requirements": [
+    [
+      "stockpot"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

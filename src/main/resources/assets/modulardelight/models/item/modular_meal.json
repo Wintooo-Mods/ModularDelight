@@ -2,7 +2,7 @@
   "parent": "item/generated",
   "textures": { "layer0": "modulardelight:item/modular_meal" },
   "overrides": [
-    { "predicate": { "modulardelight:pattern": 0.0 }, "model": "modulardelight:item/modular_meal/porridge" },
+    { "predicate": { "modulardelight:pattern": 0.1 }, "model": "modulardelight:item/modular_meal/porridge" },
     { "predicate": { "modulardelight:pattern": 0.25 }, "model": "modulardelight:item/modular_meal/curry" },
     { "predicate": { "modulardelight:pattern": 0.5 }, "model": "modulardelight:item/modular_meal/casserole" },
     { "predicate": { "modulardelight:pattern": 0.75 }, "model": "modulardelight:item/modular_meal/soup" },

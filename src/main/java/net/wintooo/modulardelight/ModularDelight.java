@@ -20,6 +20,7 @@ import net.wintooo.modulardelight.content.effect.ModStatusEffects;
 import net.wintooo.modulardelight.content.effect.parsing.ActionTypeRegistry;
 import net.wintooo.modulardelight.content.effect.parsing.AmbientReactionTypeRegistry;
 import net.wintooo.modulardelight.content.effect.parsing.TriggerTypeRegistry;
+import net.wintooo.modulardelight.content.item.ModCreativeMenu;
 import net.wintooo.modulardelight.content.item.ModItems;
 import net.wintooo.modulardelight.content.loot.ModLootFunctions;
 import net.wintooo.modulardelight.content.screen.ModScreenHandlers;
@@ -48,8 +49,8 @@ public class ModularDelight implements ModInitializer {
         ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(PropertyLoader.INSTANCE);
         ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(MealNameFilterLoader.INSTANCE);
         ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(MealOverrideLoader.INSTANCE);
+        ModCreativeMenu.load();
         CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> ModDebugCommands.register(dispatcher));
-
         ItemStorage.SIDED.registerForBlockEntity(
                 InventoryStorage::of,
                 ModBlockEntities.STOCKPOT
