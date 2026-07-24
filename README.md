@@ -12,21 +12,21 @@ For now, it only supports the Fabric version, [Farmer's Delight Refabricated](ht
 - A **condition** - something you have to do to trigger the meal's activated effect.
 - An **activated** effect - what actually happens when the condition is met.
 
-![Ingredients shown in chest](https://cdn.modrinth.com/data/cached_images/c68230381fb088dfddf7d95ec62f53a4f6268cfa_0.webp)
+![Ingredients shown in chest](readmeimages/ingredients.png)
 
 A new block, the **Stockpot**, can be heated to cook meals. Its interface has three input slots, a serving storage slot, a bowl slot, and an output slot. The three input slots correspond to the three property effects - the first slot to the ambient effect, the second to the condition, and the third to the activated effect. Once heated, the ingredients in those three slots combine into a custom meal. Just like the vanilla Cooking Pot, you can only take a serving out with a bowl - otherwise it stays in the pot, even if the pot is broken.
 
-![View of Stockpot and surrounding area](https://cdn.modrinth.com/data/cached_images/0f32c8a3e1e99be8df84d7a81dc1b40c8e323cea.png)
-![Stockpot interface, cooking a meal](https://cdn.modrinth.com/data/cached_images/9e371f90c8b5a9461f68e0c3100183f70431970e_0.webp)
-![A stockpot in the inventory, holding a serving of food.](https://cdn.modrinth.com/data/cached_images/cf39522aaf488c26b41b68812e222578826c474e_0.webp)
+![View of Stockpot and surrounding area](readmeimages/view.png)
+![Stockpot interface, cooking a meal](readmeimages/cooking.png)
+![A stockpot in the inventory, holding a serving of food](readmeimages/pot.png)
 
 Custom meals get custom names, colors, and models based on the ingredients you add, along with a tooltip showing the exact items used and a description of what the meal does when eaten. Every ingredient also contributes its own hunger (halved), saturation (halved), and any built-in potion effects it carries - including from potions themselves. If the same effect comes from multiple ingredients, their durations stack together, using the highest amplifier among them.
 
-![Cooked Chicken, Beef Patty & Cabbage Leaf Stew being hovered over with descriptive tooltip](https://cdn.modrinth.com/data/cached_images/6683f0e0ba4e28c9b5427b47b743906f60708919_0.webp)
+![Cooked Chicken, Beef Patty & Cabbage Leaf Stew being hovered over with descriptive tooltip](readmeimages/meal.png)
 
 After eating a custom meal, you get the **Digestion** effect. Hovering over it in your inventory shows every currently active meal and what each one does, separated out individually. You can have multiple different meals active at once — but eating a meal with the exact same three ingredients as one you already have active will just refresh its timer rather than stack a second copy.
 
-![Digestion effect tooltip, showing all of the currently consumed meals](https://cdn.modrinth.com/data/cached_images/138b665944115550f3d9fe6642384995b53b7298.png)
+![Digestion effect tooltip, showing all of the currently consumed meals](readmeimages/digestion.png)
 
 ## Infinite Possibilities!
 
@@ -74,8 +74,8 @@ A few things worth knowing as you get started:
 - To hook a property up to actual items, tag them under `data/<namespace>/tags/items/properties/<property_id>.json` - same pattern vanilla uses for any item tag.
 - Want to disable one of the built-in properties entirely? Use your own file at the same path (`data/modulardelight/modular_delight/properties/<id>.json`) with just `{ "remove": true }`.
 
-There's plenty more you can hook into - custom meal name filtering, hardcoded name/model overrides for specific ingredient combos, custom ambient reactions, and the full list of built-in condition and action types. For the complete reference, visit the [GitHub](https://github.com/Wintooo-Mods/ModularDelight), and for help (+ a template datapack), visit the [Discord](https://discord.gg/kTQXkVUysM).
+There's plenty more you can hook into - custom meal name filtering, hardcoded name/model overrides for specific ingredient combos, custom ambient reactions, and the full list of built-in condition and action types. For the complete reference, visit the [GitHub](https://github.com/Wintooo-Mods/ModularDelight), and for help (+ a template datapack), visit the [Discord](https://discord.gg/kTQXkVUysM). Another great resource is simply looking and the [Origins Wiki](https://origins.readthedocs.io/), although quite a different mod - it may help.
 
 Also, if you see any bugs, report them to the [Bug Tracker](https://github.com/Wintooo-Mods/ModularDelight/issues).
 
-![Stickbug gif. Make sure to report bugs!](get%20stickbugged%20in%202026.gif)
+![Stickbug gif. Make sure to report bugs!](readmeimages/get%20stickbugged%20in%202026.gif)
