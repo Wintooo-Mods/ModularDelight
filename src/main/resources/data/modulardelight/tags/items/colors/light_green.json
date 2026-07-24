@@ -1,7 +1,3 @@
 {
-  "values": [
-    "farmersdelight:vegetable_noodles",
-    "farmersdelight:cabbage",
-    "farmersdelight:mixed_salad"
-  ]
+  "values": ["farmersdelight:cabbage","farmersdelight:cabbage_leaf","farmersdelight:cabbage_rolls","farmersdelight:mixed_salad","farmersdelight:vegetable_noodles","minecraft:slime_ball"]
 }

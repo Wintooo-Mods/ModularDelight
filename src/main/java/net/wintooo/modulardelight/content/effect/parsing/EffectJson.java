@@ -1,4 +1,4 @@
-package net.wintooo.modulardelight.content.data;
+package net.wintooo.modulardelight.content.effect.parsing;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -22,11 +22,6 @@ public final class EffectJson {
     }
 
     public static Identifier id(JsonObject json, String key) {
-        return new Identifier(JsonHelper.getString(json, key));
-    }
-
-    public static Identifier id(JsonObject json, String key, Identifier fallback) {
-        if (!json.has(key)) return fallback;
         return new Identifier(JsonHelper.getString(json, key));
     }
 

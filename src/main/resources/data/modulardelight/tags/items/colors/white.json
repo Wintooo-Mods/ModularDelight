@@ -1,8 +1,3 @@
 {
-  "values": [
-    "farmersdelight:wheat_dough",
-    "farmersdelight:mushroom_rice",
-    "farmersdelight:roast_chicken",
-    "farmersdelight:dumplings"
-  ]
+  "values": ["farmersdelight:cooked_rice","farmersdelight:fried_rice","farmersdelight:milk_bottle","farmersdelight:rice","minecraft:bone","minecraft:bone_meal","minecraft:ghast_tear","minecraft:milk_bucket","minecraft:phantom_membrane","minecraft:string","minecraft:sugar"]
 }

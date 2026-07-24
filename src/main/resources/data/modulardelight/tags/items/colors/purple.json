@@ -1,7 +1,3 @@
 {
-  "values": [
-    "farmersdelight:squid_ink_pasta",
-    "farmersdelight:nether_salad",
-    "minecraft:chorus_fruit"
-  ]
+  "values": ["farmersdelight:nether_salad","farmersdelight:squid_ink_pasta","minecraft:chorus_fruit","minecraft:popped_chorus_fruit"]
 }

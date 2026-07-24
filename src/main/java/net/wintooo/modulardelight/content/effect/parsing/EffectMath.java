@@ -1,4 +1,4 @@
-package net.wintooo.modulardelight.content.data;
+package net.wintooo.modulardelight.content.effect.parsing;
 
 public final class EffectMath {
     private EffectMath() {}

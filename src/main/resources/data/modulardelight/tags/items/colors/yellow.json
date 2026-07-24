@@ -1,8 +1,3 @@
 {
-  "values": [
-    "farmersdelight:pasta_with_meatballs",
-    "farmersdelight:pasta_with_mutton_chop",
-    "farmersdelight:shepherds_pie",
-    "farmersdelight:fried_egg"
-  ]
+  "values": ["farmersdelight:chicken_soup","farmersdelight:fried_egg","farmersdelight:honey_cookie","farmersdelight:noodle_soup","farmersdelight:pasta_with_meatballs","farmersdelight:pasta_with_mutton_chop","farmersdelight:raw_pasta","farmersdelight:shepherds_pie","minecraft:enchanted_golden_apple","minecraft:golden_apple","minecraft:golden_carrot","minecraft:honey_bottle","minecraft:honeycomb","minecraft:magma_cream","minecraft:pufferfish"]
 }

@@ -2,8 +2,8 @@ package net.wintooo.modulardelight.mixin;
 
 import net.minecraft.client.item.TooltipData;
 import net.minecraft.item.ItemStack;
-import net.wintooo.modulardelight.content.item.custom.MealProperty;
-import net.wintooo.modulardelight.content.item.custom.tooltip.MealPropertyTooltip;
+import net.wintooo.modulardelight.content.meal.MealProperty;
+import net.wintooo.modulardelight.content.tooltip.IngredientPropertyTooltip;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -22,7 +22,7 @@ public class ItemStackTooltipDataMixin {
                 .filter(p -> self.isIn(p.tag()))
                 .toList();
         if (!matched.isEmpty()) {
-            cir.setReturnValue(Optional.of(new MealPropertyTooltip.Data(matched)));
+            cir.setReturnValue(Optional.of(new IngredientPropertyTooltip.Data(matched)));
         }
     }
 }

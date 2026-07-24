@@ -1,18 +1,3 @@
 {
-  "values": [
-    "farmersdelight:bacon_and_eggs",
-    "farmersdelight:pasta_with_meatballs",
-    "farmersdelight:pasta_with_mutton_chop",
-    "farmersdelight:mushroom_rice",
-    "farmersdelight:roasted_mutton_chops",
-    "farmersdelight:vegetable_noodles",
-    "farmersdelight:steak_and_potatoes",
-    "farmersdelight:ratatouille",
-    "farmersdelight:squid_ink_pasta",
-    "farmersdelight:grilled_salmon",
-    "farmersdelight:roast_chicken",
-    "farmersdelight:stuffed_pumpkin",
-    "farmersdelight:honey_glazed_ham",
-    "farmersdelight:shepherds_pie"
-  ]
+  "values": ["farmersdelight:bacon_and_eggs","farmersdelight:grilled_salmon","farmersdelight:honey_glazed_ham","farmersdelight:mushroom_rice","farmersdelight:pasta_with_meatballs","farmersdelight:pasta_with_mutton_chop","farmersdelight:ratatouille","farmersdelight:roast_chicken","farmersdelight:roasted_mutton_chops","farmersdelight:shepherds_pie","farmersdelight:squid_ink_pasta","farmersdelight:steak_and_potatoes","farmersdelight:stuffed_pumpkin","farmersdelight:vegetable_noodles"]
 }

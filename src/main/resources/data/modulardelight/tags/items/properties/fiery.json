@@ -1,8 +1,3 @@
 {
-  "values": [
-    "farmersdelight:stuffed_potato",
-    "farmersdelight:nether_salad",
-    "minecraft:baked_potato",
-    "minecraft:fire_charge"
-  ]
+  "values": ["farmersdelight:chicken_cuts","farmersdelight:chicken_soup","farmersdelight:cooked_chicken_cuts","farmersdelight:nether_salad","farmersdelight:stuffed_potato","minecraft:baked_potato","minecraft:chicken","minecraft:cooked_chicken","minecraft:fire_charge","minecraft:magma_cream"]
 }

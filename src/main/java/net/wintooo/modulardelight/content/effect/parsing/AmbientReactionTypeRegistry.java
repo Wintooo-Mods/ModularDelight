@@ -1,4 +1,4 @@
-package net.wintooo.modulardelight.content.data;
+package net.wintooo.modulardelight.content.effect.parsing;
 
 import com.google.gson.JsonObject;
 import net.minecraft.entity.Entity;
@@ -7,7 +7,7 @@ import net.minecraft.entity.damage.DamageTypes;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 import net.wintooo.modulardelight.ModularDelight;
-import net.wintooo.modulardelight.content.item.custom.MealEffect;
+import net.wintooo.modulardelight.content.meal.DigestionEffect;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -15,7 +15,7 @@ import java.util.Map;
 public final class AmbientReactionTypeRegistry {
     @FunctionalInterface
     public interface AmbientReactionFactory {
-        MealEffect.AmbientDamageReaction parse(JsonObject json);
+        DigestionEffect.AmbientDamageReaction parse(JsonObject json);
     }
 
     private static final Map<Identifier, AmbientReactionFactory> TYPES = new HashMap<>();
@@ -26,7 +26,7 @@ public final class AmbientReactionTypeRegistry {
         TYPES.put(id, factory);
     }
 
-    public static MealEffect.AmbientDamageReaction parse(JsonObject json) {
+    public static DigestionEffect.AmbientDamageReaction parse(JsonObject json) {
         Identifier type = EffectJson.id(json, "type");
         AmbientReactionFactory factory = TYPES.get(type);
         if (factory == null) throw new IllegalArgumentException("Unknown ambient reaction type: " + type);

@@ -1,6 +1,3 @@
 {
-  "values": [
-    "minecraft:chorus_fruit",
-    "minecraft:ender_pearl"
-  ]
+  "values": ["minecraft:chorus_fruit","minecraft:ender_pearl","minecraft:phantom_membrane","minecraft:popped_chorus_fruit"]
 }

@@ -1,6 +1,5 @@
 {
   "name": "Bland",
-  "ambient": { "description": "makes you easy to overlook" },
   "condition": {
     "type": "modulardelight:sneaking",
     "multiplier": 0.5,

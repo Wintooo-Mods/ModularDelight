@@ -1,0 +1,6 @@
+{
+  "name": "Infused",
+  "ambient": {
+    "description": "infuses the ingredient's properties into the meal"
+  }
+}

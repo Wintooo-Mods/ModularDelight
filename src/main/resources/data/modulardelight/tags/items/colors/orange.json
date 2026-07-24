@@ -1,6 +1,3 @@
 {
-  "values": [
-    "farmersdelight:grilled_salmon",
-    "farmersdelight:stuffed_pumpkin"
-  ]
+  "values": ["farmersdelight:cooked_salmon_slice","farmersdelight:fish_stew","farmersdelight:glow_berry_custard","farmersdelight:grilled_salmon","farmersdelight:ham","farmersdelight:pumpkin_slice","farmersdelight:pumpkin_soup","farmersdelight:salmon_roll","farmersdelight:salmon_slice","farmersdelight:stuffed_pumpkin","minecraft:carrot","minecraft:cooked_salmon","minecraft:glow_berries","minecraft:tropical_fish"]
 }

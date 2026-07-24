@@ -1,5 +1,3 @@
 {
-  "values": [
-    "minecraft:gunpowder"
-  ]
+  "values": ["farmersdelight:bacon","farmersdelight:cooked_bacon","minecraft:cooked_porkchop","minecraft:gunpowder","minecraft:porkchop"]
 }

@@ -12,6 +12,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.wintooo.modulardelight.content.effect.ModStatusEffects;
 import net.wintooo.modulardelight.content.util.ClientDigestionManager;
+import net.wintooo.modulardelight.mixin.client.ScreenAccessor;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
@@ -24,6 +25,7 @@ import java.util.Optional;
 @Mixin(AbstractInventoryScreen.class)
 public abstract class AbstractInventoryScreenMixin {
 
+    @SuppressWarnings("resource")
     @ModifyVariable(method = "drawStatusEffects", at = @At("STORE"), ordinal = 0)
     private boolean modulardelight$forceCompactForDigestion(boolean wide) {
         MinecraftClient client = ((ScreenAccessor) this).modulardelight$getClient();
@@ -31,6 +33,7 @@ public abstract class AbstractInventoryScreenMixin {
                 || !client.player.hasStatusEffect(ModStatusEffects.DIGESTION));
     }
 
+    @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
     @Redirect(
             method = "drawStatusEffects",
             at = @At(

@@ -1,6 +1,5 @@
 {
   "name": "Springy",
-  "ambient": { "description": "makes you bouncy on your feet" },
   "condition": {
     "type": "modulardelight:rising",
     "min_velocity": 0.1,

@@ -39,7 +39,7 @@ import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
 import net.minecraft.world.WorldView;
-import net.wintooo.modulardelight.content.block.custom.entity.ModBlockEntities;
+import net.wintooo.modulardelight.content.block.ModBlockEntities;
 import net.wintooo.modulardelight.content.block.custom.entity.StockpotBlockEntity;
 
 import org.jetbrains.annotations.Nullable;
@@ -264,6 +264,7 @@ public class StockpotBlock extends Block implements Waterloggable, BlockEntityPr
         return validateTicker(type, ModBlockEntities.STOCKPOT, StockpotBlockEntity::tick);
     }
 
+    @SuppressWarnings("SameParameterValue")
     @Nullable
     private static <A extends BlockEntity, E extends BlockEntity> BlockEntityTicker<A> validateTicker(
             BlockEntityType<A> givenType, BlockEntityType<E> expectedType, BlockEntityTicker<? super E> ticker) {

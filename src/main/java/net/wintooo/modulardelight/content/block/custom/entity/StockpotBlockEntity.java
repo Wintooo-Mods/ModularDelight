@@ -28,9 +28,10 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraft.world.event.GameEvent;
+import net.wintooo.modulardelight.content.block.ModBlockEntities;
 import net.wintooo.modulardelight.content.block.custom.StockpotBlock;
-import net.wintooo.modulardelight.content.item.custom.MealEffect;
-import net.wintooo.modulardelight.content.item.custom.MealProperty;
+import net.wintooo.modulardelight.content.meal.DigestionEffect;
+import net.wintooo.modulardelight.content.meal.MealProperty;
 import net.wintooo.modulardelight.content.item.custom.ModularMealItem;
 import net.wintooo.modulardelight.content.screen.StockpotScreenHandler;
 import org.jetbrains.annotations.Nullable;
@@ -410,16 +411,22 @@ public class StockpotBlockEntity extends BlockEntity implements SidedInventory, 
         return slot == SLOT_OUTPUT;
     }
 
-    private static MealEffect resolveEffect(ItemStack stack) {
+    private static DigestionEffect resolveEffect(ItemStack stack) {
         if (stack.isEmpty()) return null;
         Identifier id = Registries.ITEM.getId(stack.getItem());
         MealProperty property = ModularMealItem.resolveProperty(id);
-        return property == null ? null : MealEffect.byProperty(property);
+        return property == null ? null : DigestionEffect.byProperty(property);
     }
 
     public static boolean isValidAmbientIngredient(ItemStack stack) {
-        MealEffect effect = resolveEffect(stack);
+        DigestionEffect effect = resolveEffect(stack);
         if (effect == null) return false;
+
+        boolean hasCondition = effect.tickTrigger() != null || effect.damageTrigger() != null
+                || effect.attackTrigger() != null || effect.eatTrigger() != null;
+
+        if (!hasCondition) return true;
+
         return !effect.ambientAttributes().isEmpty()
                 || !effect.ambientStatusEffects().isEmpty()
                 || !effect.ambientDamageReactions().isEmpty()
@@ -427,14 +434,14 @@ public class StockpotBlockEntity extends BlockEntity implements SidedInventory, 
     }
 
     public static boolean isValidConditionIngredient(ItemStack stack) {
-        MealEffect effect = resolveEffect(stack);
+        DigestionEffect effect = resolveEffect(stack);
         return effect != null
                 && (effect.tickTrigger() != null || effect.damageTrigger() != null
                 || effect.attackTrigger() != null || effect.eatTrigger() != null);
     }
 
     public static boolean isValidActivatedIngredient(ItemStack stack) {
-        MealEffect effect = resolveEffect(stack);
+        DigestionEffect effect = resolveEffect(stack);
         return effect != null && effect.activatedAction() != null;
     }
 

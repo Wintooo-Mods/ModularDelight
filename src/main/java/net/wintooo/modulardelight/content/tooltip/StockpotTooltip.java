@@ -1,4 +1,4 @@
-package net.wintooo.modulardelight.content.item.custom.tooltip;
+package net.wintooo.modulardelight.content.tooltip;
 
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;

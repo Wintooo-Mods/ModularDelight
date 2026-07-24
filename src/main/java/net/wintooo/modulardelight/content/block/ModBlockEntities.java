@@ -1,11 +1,11 @@
-package net.wintooo.modulardelight.content.block.custom.entity;
+package net.wintooo.modulardelight.content.block;
 
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.wintooo.modulardelight.ModularDelight;
-import net.wintooo.modulardelight.content.block.ModBlocks;
+import net.wintooo.modulardelight.content.block.custom.entity.StockpotBlockEntity;
 
 public class ModBlockEntities {
     public static final BlockEntityType<StockpotBlockEntity> STOCKPOT = Registry.register(

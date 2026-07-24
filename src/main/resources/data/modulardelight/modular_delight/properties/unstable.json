@@ -9,6 +9,6 @@
     "description": "the dice are rolled"
   },
   "activated": {
-    "action": { "type": "modulardelight:teleport_random", "range": 8.0, "attempts": 16 }
+    "action": { "type": "modulardelight:teleport_random", "range": 32.0, "attempts": 128 }
   }
 }

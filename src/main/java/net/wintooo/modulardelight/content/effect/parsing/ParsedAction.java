@@ -1,4 +1,4 @@
-package net.wintooo.modulardelight.content.data;
+package net.wintooo.modulardelight.content.effect.parsing;
 
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;

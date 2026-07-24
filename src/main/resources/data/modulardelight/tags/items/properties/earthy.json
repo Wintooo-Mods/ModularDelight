@@ -1,7 +1,3 @@
 {
-  "values": [
-    "farmersdelight:onion",
-    "minecraft:beetroot",
-    "minecraft:beetroot_soup"
-  ]
+  "values": ["farmersdelight:milk_bottle","farmersdelight:onion","farmersdelight:pumpkin_slice","farmersdelight:pumpkin_soup","farmersdelight:vegetable_soup","minecraft:beetroot","minecraft:beetroot_soup","minecraft:brown_mushroom","minecraft:glistering_melon_slice","minecraft:milk_bucket","minecraft:mushroom_stew","minecraft:red_mushroom","minecraft:rotten_flesh","minecraft:suspicious_stew"]
 }

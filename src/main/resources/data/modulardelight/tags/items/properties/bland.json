@@ -1,7 +1,3 @@
 {
-  "values": [
-    "farmersdelight:pie_crust",
-    "farmersdelight:wheat_dough",
-    "minecraft:potato"
-  ]
+  "values": ["farmersdelight:bone_broth","farmersdelight:cooked_rice","farmersdelight:pie_crust","farmersdelight:rice","farmersdelight:rice_panicle","farmersdelight:wheat_dough","minecraft:bone","minecraft:bone_meal","minecraft:egg","minecraft:potato"]
 }

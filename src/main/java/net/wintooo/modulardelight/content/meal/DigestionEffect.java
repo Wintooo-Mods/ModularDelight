@@ -1,4 +1,4 @@
-package net.wintooo.modulardelight.content.item.custom;
+package net.wintooo.modulardelight.content.meal;
 
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
@@ -8,7 +8,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
-import net.wintooo.modulardelight.content.data.ParsedAmbient;
+import net.wintooo.modulardelight.content.effect.parsing.ParsedAmbient;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -18,7 +18,7 @@ import java.util.function.BiConsumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-public record MealEffect(
+public record DigestionEffect(
         Identifier id,
         MealProperty property,
         List<ParsedAmbient.AmbientAttribute> ambientAttributes,
@@ -56,7 +56,7 @@ public record MealEffect(
         void react(ServerPlayerEntity player, DamageSource source, float amount, double multiplier);
     }
 
-    private static final Map<Identifier, MealEffect> REGISTRY = new LinkedHashMap<>();
+    private static final Map<Identifier, DigestionEffect> REGISTRY = new LinkedHashMap<>();
 
     public UUID modifierId(int attributeIndex) {
         return UUID.nameUUIDFromBytes(("modulardelight:ambient:" + id + ":" + attributeIndex).getBytes());
@@ -66,7 +66,7 @@ public record MealEffect(
         REGISTRY.clear();
     }
 
-    public static void register(Identifier id, MealEffect effect) {
+    public static void register(Identifier id, DigestionEffect effect) {
         REGISTRY.put(id, effect);
     }
 
@@ -74,12 +74,12 @@ public record MealEffect(
         return REGISTRY.size();
     }
 
-    public static MealEffect byId(Identifier id) {
+    public static DigestionEffect byId(Identifier id) {
         return id == null ? null : REGISTRY.get(id);
     }
 
-    public static MealEffect byProperty(MealProperty property) {
-        for (MealEffect effect : REGISTRY.values()) {
+    public static DigestionEffect byProperty(MealProperty property) {
+        for (DigestionEffect effect : REGISTRY.values()) {
             if (effect.property() == property) return effect;
         }
         return null;
@@ -105,12 +105,12 @@ public record MealEffect(
         );
     }
 
-    public static String compositeKey(MealEffect ambient, MealEffect condition, MealEffect activated) {
+    public static String compositeKey(DigestionEffect ambient, DigestionEffect condition, DigestionEffect activated) {
         return ambient.id() + "+" + condition.id() + "+" + activated.id();
     }
 
-    public static MealEffect combine(MealEffect ambientSource, MealEffect conditionSource, MealEffect activatedSource) {
-        return new MealEffect(
+    public static DigestionEffect combine(DigestionEffect ambientSource, DigestionEffect conditionSource, DigestionEffect activatedSource) {
+        return new DigestionEffect(
                 activatedSource.id(),
                 ambientSource.property(),
                 ambientSource.ambientAttributes(),

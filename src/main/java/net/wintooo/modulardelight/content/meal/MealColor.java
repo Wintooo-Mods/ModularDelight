@@ -1,4 +1,4 @@
-package net.wintooo.modulardelight.content.item.custom;
+package net.wintooo.modulardelight.content.meal;
 
 import net.minecraft.item.Item;
 import net.minecraft.registry.RegistryKeys;

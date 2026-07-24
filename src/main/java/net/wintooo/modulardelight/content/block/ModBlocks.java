@@ -1,7 +1,6 @@
 package net.wintooo.modulardelight.content.block;
 
 import net.minecraft.block.*;
-import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
@@ -15,8 +14,8 @@ public class ModBlocks {
 
     public static final StockpotBlock STOCKPOT = register("stockpot",
             new StockpotBlock(AbstractBlock.Settings.create()
-                    .mapColor(net.minecraft.block.MapColor.IRON_GRAY)
-                    .strength(2.5F)
+                    .mapColor(MapColor.IRON_GRAY)
+                    .strength(0.5F, 6.0F)
                     .sounds(BlockSoundGroup.LANTERN)
                     .nonOpaque()));
 
@@ -28,16 +27,5 @@ public class ModBlocks {
         return Registry.register(Registries.BLOCK, ModularDelight.id(name), block);
     }
 
-    public static <T extends Block> T registerWithItem(String name, T block, Item.Settings settings) {
-        T registered = register(name, block);
-        ModItems.register(name, new BlockItem(registered, settings));
-        return registered;
-    }
-
-    public static <T extends Block> T registerWithItem(String name, T block) {
-        return registerWithItem(name, block, new Item.Settings());
-    }
-
-    public static void load() {
-    }
+    public static void load() {}
 }

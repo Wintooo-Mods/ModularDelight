@@ -10,6 +10,7 @@ import net.minecraft.resource.ResourceManager;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.profiler.Profiler;
 import net.wintooo.modulardelight.ModularDelight;
+import net.wintooo.modulardelight.content.effect.parsing.EffectJson;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

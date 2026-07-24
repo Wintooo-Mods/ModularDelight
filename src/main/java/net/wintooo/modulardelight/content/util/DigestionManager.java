@@ -18,9 +18,10 @@ import net.minecraft.nbt.NbtList;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.TypedActionResult;
+import net.wintooo.modulardelight.content.meal.DigestionEffect;
 import net.wintooo.modulardelight.content.effect.ModStatusEffects;
-import net.wintooo.modulardelight.content.data.ParsedAmbient;
-import net.wintooo.modulardelight.content.item.custom.MealEffect;
+import net.wintooo.modulardelight.content.effect.parsing.ParsedAmbient;
+import net.wintooo.modulardelight.content.meal.ActiveMeal;
 
 import java.util.*;
 import java.util.function.Function;
@@ -30,10 +31,10 @@ import static net.wintooo.modulardelight.content.network.DigestionNetworking.syn
 public class DigestionManager {
     private record ActiveEffect(
             String key,
-            MealEffect composite,
-            MealEffect ambient,
-            MealEffect condition,
-            MealEffect activated,
+            DigestionEffect composite,
+            DigestionEffect ambient,
+            DigestionEffect condition,
+            DigestionEffect activated,
             int remainingTicks
     ) {}
 
@@ -76,13 +77,13 @@ public class DigestionManager {
 
     public static void grant(
             ServerPlayerEntity player,
-            MealEffect composite,
-            MealEffect ambient,
-            MealEffect condition,
-            MealEffect activated,
+            DigestionEffect composite,
+            DigestionEffect ambient,
+            DigestionEffect condition,
+            DigestionEffect activated,
             int durationTicks
     ) {
-        String key = MealEffect.compositeKey(ambient, condition, activated);
+        String key = DigestionEffect.compositeKey(ambient, condition, activated);
         ACTIVE.computeIfAbsent(player.getUuid(), k -> new HashMap<>())
                 .put(key, new ActiveEffect(key, composite, ambient, condition, activated, durationTicks));
         sync(player);
@@ -108,7 +109,7 @@ public class DigestionManager {
 
     private static void applyAmbientStatusEffects(ServerPlayerEntity player, Map<String, ActiveEffect> active) {
         for (ActiveEffect entry : active.values()) {
-            MealEffect effect = entry.composite();
+            DigestionEffect effect = entry.composite();
             for (Function<Double, StatusEffectInstance> statusEffectFn : effect.ambientStatusEffects()) {
                 StatusEffectInstance desired = statusEffectFn.apply(1.0);
                 StatusEffectInstance current = player.getStatusEffect(desired.getEffectType());
@@ -127,7 +128,7 @@ public class DigestionManager {
         while (it.hasNext()) {
             Map.Entry<String, ActiveEffect> entry = it.next();
             ActiveEffect old = entry.getValue();
-            MealEffect effect = old.composite();
+            DigestionEffect effect = old.composite();
             int remaining = old.remainingTicks() - 1;
 
             if (remaining <= 0) {
@@ -154,15 +155,15 @@ public class DigestionManager {
         if (active == null || active.isEmpty()) return;
 
         for (ActiveEffect entry : active.values()) {
-            MealEffect effect = entry.composite();
-            for (MealEffect.AmbientDamageReaction reaction : effect.ambientDamageReactions()) {
+            DigestionEffect effect = entry.composite();
+            for (DigestionEffect.AmbientDamageReaction reaction : effect.ambientDamageReactions()) {
                 reaction.react(player, source, damageTaken, effect.multiplier());
             }
         }
 
         Map<String, Integer> cooldowns = COOLDOWNS.computeIfAbsent(player.getUuid(), k -> new HashMap<>());
         for (ActiveEffect entry : active.values()) {
-            MealEffect effect = entry.composite();
+            DigestionEffect effect = entry.composite();
             if (effect.damageTrigger() == null) continue;
 
             int cooldown = cooldowns.getOrDefault(entry.key(), 0);
@@ -181,7 +182,7 @@ public class DigestionManager {
 
         Map<String, Integer> cooldowns = COOLDOWNS.computeIfAbsent(attacker.getUuid(), k -> new HashMap<>());
         for (ActiveEffect entry : active.values()) {
-            MealEffect effect = entry.composite();
+            DigestionEffect effect = entry.composite();
             if (effect.attackTrigger() == null) continue;
 
             int cooldown = cooldowns.getOrDefault(entry.key(), 0);
@@ -200,7 +201,7 @@ public class DigestionManager {
 
         Map<String, Integer> cooldowns = COOLDOWNS.computeIfAbsent(player.getUuid(), k -> new HashMap<>());
         for (ActiveEffect entry : active.values()) {
-            MealEffect effect = entry.composite();
+            DigestionEffect effect = entry.composite();
             if (effect.eatTrigger() == null) continue;
 
             int cooldown = cooldowns.getOrDefault(entry.key(), 0);
@@ -230,7 +231,7 @@ public class DigestionManager {
         Map<UUID, EntityAttributeModifier> desiredMods = new HashMap<>();
         if (active != null) {
             for (ActiveEffect entry : active.values()) {
-                MealEffect effect = entry.composite();
+                DigestionEffect effect = entry.composite();
                 List<ParsedAmbient.AmbientAttribute> attrs = effect.ambientAttributes();
                 for (int i = 0; i < attrs.size(); i++) {
                     ParsedAmbient.AmbientAttribute attr = attrs.get(i);
@@ -307,15 +308,15 @@ public class DigestionManager {
         Map<String, ActiveEffect> restored = new HashMap<>();
         for (NbtElement element : list) {
             NbtCompound entry = (NbtCompound) element;
-            MealEffect ambient = MealEffect.byId(Identifier.tryParse(entry.getString("Ambient")));
-            MealEffect condition = MealEffect.byId(Identifier.tryParse(entry.getString("Condition")));
-            MealEffect activated = MealEffect.byId(Identifier.tryParse(entry.getString("Activated")));
+            DigestionEffect ambient = DigestionEffect.byId(Identifier.tryParse(entry.getString("Ambient")));
+            DigestionEffect condition = DigestionEffect.byId(Identifier.tryParse(entry.getString("Condition")));
+            DigestionEffect activated = DigestionEffect.byId(Identifier.tryParse(entry.getString("Activated")));
             int remaining = entry.getInt("Remaining");
 
             if (ambient == null || condition == null || activated == null || remaining <= 0) continue;
 
-            MealEffect composite = MealEffect.combine(ambient, condition, activated);
-            String key = MealEffect.compositeKey(ambient, condition, activated);
+            DigestionEffect composite = DigestionEffect.combine(ambient, condition, activated);
+            String key = DigestionEffect.compositeKey(ambient, condition, activated);
             restored.put(key, new ActiveEffect(key, composite, ambient, condition, activated, remaining));
         }
 

@@ -16,6 +16,6 @@
     "requireAnnotations": true
   },
   "client": [
-    "ScreenAccessor"
+    "client.ScreenAccessor"
   ]
 }

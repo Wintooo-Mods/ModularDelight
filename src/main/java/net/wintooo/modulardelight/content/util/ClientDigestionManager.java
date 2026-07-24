@@ -2,8 +2,9 @@ package net.wintooo.modulardelight.content.util;
 
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
-import net.wintooo.modulardelight.content.item.custom.MealEffect;
-import net.wintooo.modulardelight.content.item.custom.MealProperty;
+import net.wintooo.modulardelight.content.meal.DigestionEffect;
+import net.wintooo.modulardelight.content.meal.ActiveMeal;
+import net.wintooo.modulardelight.content.meal.MealProperty;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +35,7 @@ public final class ClientDigestionManager {
             ActiveMeal meal = ACTIVE.get(i);
             tooltip.add(headerText(meal));
 
-            MealEffect composite = MealEffect.combine(
+            DigestionEffect composite = DigestionEffect.combine(
                     meal.ambient(),
                     meal.condition(),
                     meal.activated()

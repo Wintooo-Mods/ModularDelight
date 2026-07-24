@@ -6,7 +6,7 @@ import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
 import net.wintooo.modulardelight.ModularDelight;
-import net.wintooo.modulardelight.content.util.ActiveMeal;
+import net.wintooo.modulardelight.content.meal.ActiveMeal;
 import net.wintooo.modulardelight.content.util.DigestionManager;
 
 import java.util.List;

@@ -5,8 +5,8 @@ import com.mojang.brigadier.context.CommandContext;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.text.Text;
-import net.wintooo.modulardelight.content.item.custom.MealEffect;
-import net.wintooo.modulardelight.content.item.custom.MealProperty;
+import net.wintooo.modulardelight.content.meal.DigestionEffect;
+import net.wintooo.modulardelight.content.meal.MealProperty;
 
 public final class ModDebugCommands {
     private ModDebugCommands() {}
@@ -22,7 +22,7 @@ public final class ModDebugCommands {
         ServerCommandSource source = ctx.getSource();
         source.sendFeedback(() -> Text.literal("Loaded properties (" + MealProperty.all().size() + "):"), false);
         for (MealProperty property : MealProperty.all()) {
-            boolean hasEffect = MealEffect.byProperty(property) != null;
+            boolean hasEffect = DigestionEffect.byProperty(property) != null;
             source.sendFeedback(() -> Text.literal(" - " + property.id() + " \"" + property.name().getString() + "\""
                     + (hasEffect ? "" : " (no effect)")), false);
         }
@@ -31,15 +31,15 @@ public final class ModDebugCommands {
 
     private static int listEffects(CommandContext<ServerCommandSource> ctx) {
         ServerCommandSource source = ctx.getSource();
-        source.sendFeedback(() -> Text.literal("Loaded meal effects (" + MealEffect.count() + "):"), false);
+        source.sendFeedback(() -> Text.literal("Loaded meal effects (" + DigestionEffect.count() + "):"), false);
         for (MealProperty property : MealProperty.all()) {
-            MealEffect effect = MealEffect.byProperty(property);
+            DigestionEffect effect = DigestionEffect.byProperty(property);
             if (effect == null) continue;
             source.sendFeedback(() -> Text.literal(" - " + effect.id() + ": "
                     + effect.conditionDescription().getString() + " -> "
                     + effect.activatedDescription().apply(1.0).getString()
                     + " (x" + effect.multiplier() + ", cooldown " + effect.triggerCooldownTicks() + "t)"), false);
         }
-        return MealEffect.count();
+        return DigestionEffect.count();
     }
 }

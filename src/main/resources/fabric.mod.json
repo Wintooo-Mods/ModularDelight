@@ -20,9 +20,6 @@
     ],
     "client": [
       "net.wintooo.modulardelight.ModularDelightClient"
-    ],
-    "fabric-datagen": [
-      "net.wintooo.modulardelight.ModularDelightDataGenerator"
     ]
   },
   "mixins": [

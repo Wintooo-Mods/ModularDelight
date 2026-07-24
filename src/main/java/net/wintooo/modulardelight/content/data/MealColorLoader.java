@@ -9,7 +9,8 @@ import net.minecraft.resource.ResourceManager;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.profiler.Profiler;
 import net.wintooo.modulardelight.ModularDelight;
-import net.wintooo.modulardelight.content.item.custom.MealColor;
+import net.wintooo.modulardelight.content.effect.parsing.EffectJson;
+import net.wintooo.modulardelight.content.meal.MealColor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

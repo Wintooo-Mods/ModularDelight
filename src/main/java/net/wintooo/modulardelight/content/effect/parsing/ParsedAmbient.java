@@ -1,4 +1,4 @@
-package net.wintooo.modulardelight.content.data;
+package net.wintooo.modulardelight.content.effect.parsing;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -10,7 +10,7 @@ import net.minecraft.registry.Registries;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
-import net.wintooo.modulardelight.content.item.custom.MealEffect;
+import net.wintooo.modulardelight.content.meal.DigestionEffect;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +19,7 @@ import java.util.function.Function;
 public record ParsedAmbient(
         List<AmbientAttribute> attributes,
         List<Function<Double, StatusEffectInstance>> statusEffects,
-        List<MealEffect.AmbientDamageReaction> damageReactions,
+        List<DigestionEffect.AmbientDamageReaction> damageReactions,
         boolean alwaysEdible,
         Function<Double, Text> description
 ) {
@@ -33,7 +33,7 @@ public record ParsedAmbient(
 
         List<AmbientAttribute> attributes = new ArrayList<>();
         List<Function<Double, StatusEffectInstance>> statusEffects = new ArrayList<>();
-        List<MealEffect.AmbientDamageReaction> damageReactions = new ArrayList<>();
+        List<DigestionEffect.AmbientDamageReaction> damageReactions = new ArrayList<>();
         List<Function<Double, Text>> autoDescriptions = new ArrayList<>();
         boolean alwaysEdible = EffectJson.bool(json, "always_edible", false);
 

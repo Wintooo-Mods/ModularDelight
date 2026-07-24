@@ -7,13 +7,12 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.MathHelper;
 import net.wintooo.modulardelight.content.block.custom.entity.StockpotBlockEntity;
-import net.wintooo.modulardelight.content.item.custom.tooltip.StockpotTooltip;
+import net.wintooo.modulardelight.content.tooltip.StockpotTooltip;
 
 import java.util.Optional;
 
 public class StockpotItem extends BlockItem {
     private static final int BAR_COLOR = MathHelper.packRgb(0.4F, 0.4F, 1.0F);
-    private static final int MAX_STOCK = 64;
 
     public StockpotItem(Block block, Item.Settings settings) {
         super(block, settings);
@@ -26,7 +25,7 @@ public class StockpotItem extends BlockItem {
 
     @Override
     public int getItemBarStep(ItemStack stack) {
-        return Math.min(1 + 12 * getStockCount(stack) / MAX_STOCK, 13);
+        return Math.min(1 + 12 * getStockCount(stack) / StockpotBlockEntity.MAX_STOCK_SERVINGS, 13);
     }
 
     @Override

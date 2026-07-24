@@ -1,4 +1,4 @@
-package net.wintooo.modulardelight.content.data;
+package net.wintooo.modulardelight.content.effect.parsing;
 
 import com.google.gson.JsonObject;
 import net.minecraft.entity.LivingEntity;
@@ -138,8 +138,8 @@ public final class ActionTypeRegistry {
     }
 
     private static ParsedAction parseTeleportRandom(JsonObject json) {
-        double range = EffectJson.dbl(json, "range", 8.0);
-        int attempts = EffectJson.intg(json, "attempts", 16);
+        double range = EffectJson.dbl(json, "range", 32.0);
+        int attempts = EffectJson.intg(json, "attempts", 128);
 
         return new ParsedAction(
                 (player, mult) -> {
@@ -152,7 +152,7 @@ public final class ActionTypeRegistry {
                         double z = player.getZ() + (RANDOM.nextDouble() - 0.5) * range;
 
                         BlockPos dest = BlockPos.ofFloored(x, y, z);
-                        if (world.isAir(dest) && world.isAir(dest.up())) {
+                        if (world.isAir(dest) && world.isAir(dest.up()) && !world.isAir(dest.down())) {
                             player.networkHandler.requestTeleport(x, y, z, player.getYaw(), player.getPitch());
                             world.playSound(null, x, y, z, SoundEvents.ITEM_CHORUS_FRUIT_TELEPORT,
                                     SoundCategory.PLAYERS, 1.0F, 1.0F);

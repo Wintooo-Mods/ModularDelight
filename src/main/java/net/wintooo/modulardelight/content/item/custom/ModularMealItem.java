@@ -23,9 +23,13 @@ import net.minecraft.world.World;
 import net.wintooo.modulardelight.content.data.MealNameFilterRegistry;
 import net.wintooo.modulardelight.content.data.MealOverride;
 import net.wintooo.modulardelight.content.data.MealOverrideRegistry;
+import net.wintooo.modulardelight.content.meal.DigestionEffect;
+import net.wintooo.modulardelight.content.meal.MealColor;
+import net.wintooo.modulardelight.content.meal.MealPattern;
+import net.wintooo.modulardelight.content.meal.MealProperty;
 import net.wintooo.modulardelight.content.effect.ModStatusEffects;
 import net.wintooo.modulardelight.content.item.ModItems;
-import net.wintooo.modulardelight.content.item.custom.tooltip.MealSummaryTooltip;
+import net.wintooo.modulardelight.content.tooltip.MealSummaryTooltip;
 import net.wintooo.modulardelight.content.util.DigestionManager;
 import org.jetbrains.annotations.Nullable;
 
@@ -40,6 +44,7 @@ public class ModularMealItem extends Item {
 
     private static final int MIN_HUNGER_PER_INGREDIENT = 1;
     private static final float MIN_SATURATION_MODIFIER_PER_INGREDIENT = 0.1f;
+    private static final int DEFAULT_TINT_COLOR = 0xE8E4D8;
 
     private record FoodStats(int hunger, float saturationModifier) {}
 
@@ -114,65 +119,32 @@ public class ModularMealItem extends Item {
 
             if (food != null) {
                 for (Pair<StatusEffectInstance, Float> pair : food.getStatusEffects()) {
-                    collected.computeIfAbsent(
-                            pair.getFirst().getEffectType(),
-                            k -> new ArrayList<>()
-                    ).add(pair.getFirst());
+                    collected.computeIfAbsent(pair.getFirst().getEffectType(), k -> new ArrayList<>()).add(pair.getFirst());
                 }
             }
 
             for (StatusEffectInstance effect : PotionUtil.getPotionEffects(ingredient)) {
-                collected.computeIfAbsent(
-                        effect.getEffectType(),
-                        k -> new ArrayList<>()
-                ).add(effect);
+                collected.computeIfAbsent(effect.getEffectType(), k -> new ArrayList<>()).add(effect);
             }
         }
 
         List<StatusEffectInstance> result = new ArrayList<>();
-
         for (List<StatusEffectInstance> effects : collected.values()) {
-            int duration = effects.stream()
-                    .mapToInt(StatusEffectInstance::getDuration)
-                    .sum();
-
-            int amplifier = effects.stream()
-                    .mapToInt(StatusEffectInstance::getAmplifier)
-                    .max()
-                    .orElse(0);
-
+            int duration = effects.stream().mapToInt(StatusEffectInstance::getDuration).sum();
+            int amplifier = effects.stream().mapToInt(StatusEffectInstance::getAmplifier).max().orElse(0);
             StatusEffectInstance base = effects.get(0);
-
-            result.add(new StatusEffectInstance(
-                    base.getEffectType(),
-                    duration,
-                    amplifier,
-                    false,
-                    true,
-                    true
-            ));
+            result.add(new StatusEffectInstance(base.getEffectType(), duration, amplifier, false, true, true));
         }
-
         return result;
     }
 
     @Override
-    public void appendTooltip(
-            ItemStack stack,
-            @Nullable World world,
-            List<Text> tooltip,
-            TooltipContext context
-    ) {
+    public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
         super.appendTooltip(stack, world, tooltip, context);
 
         List<StatusEffectInstance> effects = getCombinedEffects(stack);
-
         if (!effects.isEmpty()) {
-            PotionUtil.buildTooltip(
-                    effects,
-                    tooltip,
-                    1.0F
-            );
+            PotionUtil.buildTooltip(effects, tooltip, 1.0F);
         }
     }
 
@@ -227,33 +199,33 @@ public class ModularMealItem extends Item {
     private void grantDigestion(ServerPlayerEntity player, ItemStack stack) {
         List<Identifier> ids = getIngredientIds(stack);
 
-        MealEffect ambient = sourceEffect(ids.get(SLOT_AMBIENT));
-        MealEffect condition = sourceEffect(ids.get(SLOT_CONDITION));
-        MealEffect activated = sourceEffect(ids.get(SLOT_ACTIVATED));
+        DigestionEffect ambient = sourceEffect(ids.get(SLOT_AMBIENT));
+        DigestionEffect condition = sourceEffect(ids.get(SLOT_CONDITION));
+        DigestionEffect activated = sourceEffect(ids.get(SLOT_ACTIVATED));
 
         if (ambient == null || condition == null || activated == null) return;
 
-        MealEffect composite = MealEffect.combine(ambient, condition, activated);
+        DigestionEffect composite = DigestionEffect.combine(ambient, condition, activated);
 
         DigestionManager.grant(player, composite, ambient, condition, activated, DIGESTION_DURATION_TICKS);
         player.addStatusEffect(new StatusEffectInstance(
                 ModStatusEffects.DIGESTION, DIGESTION_DURATION_TICKS, 0, true, false));
     }
 
-    private static MealEffect resolveComposite(List<Identifier> ingredientIds) {
+    private static DigestionEffect resolveComposite(List<Identifier> ingredientIds) {
         if (ingredientIds.size() != REQUIRED_SLOTS) return null;
 
-        MealEffect ambientSource = sourceEffect(ingredientIds.get(SLOT_AMBIENT));
-        MealEffect conditionSource = sourceEffect(ingredientIds.get(SLOT_CONDITION));
-        MealEffect activatedSource = sourceEffect(ingredientIds.get(SLOT_ACTIVATED));
+        DigestionEffect ambientSource = sourceEffect(ingredientIds.get(SLOT_AMBIENT));
+        DigestionEffect conditionSource = sourceEffect(ingredientIds.get(SLOT_CONDITION));
+        DigestionEffect activatedSource = sourceEffect(ingredientIds.get(SLOT_ACTIVATED));
 
         if (ambientSource == null || conditionSource == null || activatedSource == null) return null;
-        return MealEffect.combine(ambientSource, conditionSource, activatedSource);
+        return DigestionEffect.combine(ambientSource, conditionSource, activatedSource);
     }
 
-    private static MealEffect sourceEffect(Identifier ingredientId) {
+    private static DigestionEffect sourceEffect(Identifier ingredientId) {
         MealProperty property = resolveProperty(ingredientId);
-        return property == null ? null : MealEffect.byProperty(property);
+        return property == null ? null : DigestionEffect.byProperty(property);
     }
 
     public static MealProperty resolveProperty(Identifier ingredientId) {
@@ -301,7 +273,7 @@ public class ModularMealItem extends Item {
                 .map(s -> Registries.ITEM.getId(s.getItem()))
                 .toList();
 
-        MealEffect composite = resolveComposite(ingredientIds);
+        DigestionEffect composite = resolveComposite(ingredientIds);
         List<Text> descriptionLines = composite == null ? List.of() : composite.getMealTooltip();
 
         return Optional.of(new MealSummaryTooltip.Data(descriptionLines, ingredientStacks));
@@ -341,26 +313,36 @@ public class ModularMealItem extends Item {
         return Text.literal(filtered.isBlank() ? raw : filtered);
     }
 
-    public static List<MealColor> resolveTintColors(ItemStack stack) {
-        List<Identifier> ingredientIds = getIngredientIds(stack);
-        if (ingredientIds.size() != REQUIRED_SLOTS) return List.of();
+    public static List<Integer> resolveTintColors(ItemStack stack) {
+        List<ItemStack> ingredientStacks = getIngredientStacks(stack);
+        if (ingredientStacks.size() != REQUIRED_SLOTS) return List.of();
+
+        List<Identifier> ingredientIds = ingredientStacks.stream()
+                .map(s -> Registries.ITEM.getId(s.getItem()))
+                .toList();
 
         MealPattern pattern = resolvePattern(ingredientIds);
         if (pattern == null) return List.of();
 
-        MealColor ambient = resolveColor(ingredientIds.get(SLOT_AMBIENT));
-        MealColor condition = resolveColor(ingredientIds.get(SLOT_CONDITION));
-        MealColor activated = resolveColor(ingredientIds.get(SLOT_ACTIVATED));
-        if (ambient == null) return List.of();
-        if (condition == null) return List.of();
-        if (activated == null) return List.of();
+        ItemStack ambientStack = ingredientStacks.get(SLOT_AMBIENT);
+        ItemStack conditionStack = ingredientStacks.get(SLOT_CONDITION);
+        ItemStack activatedStack = ingredientStacks.get(SLOT_ACTIVATED);
 
         return switch (pattern) {
-            case UNIFORM -> List.of(ambient);
-            case AMBIENT_CONDITION -> List.of(ambient, activated);
-            case AMBIENT_ACTIVATED -> List.of(ambient, condition);
-            case CONDITION_ACTIVATED -> List.of(condition, ambient);
-            case UNIQUE -> List.of(ambient, condition, activated);
+            case UNIFORM -> List.of(tintColorFor(ambientStack));
+            case AMBIENT_CONDITION -> List.of(tintColorFor(ambientStack), tintColorFor(activatedStack));
+            case AMBIENT_ACTIVATED -> List.of(tintColorFor(ambientStack), tintColorFor(conditionStack));
+            case CONDITION_ACTIVATED -> List.of(tintColorFor(conditionStack), tintColorFor(ambientStack));
+            case UNIQUE -> List.of(tintColorFor(ambientStack), tintColorFor(conditionStack), tintColorFor(activatedStack));
         };
+    }
+
+    private static int tintColorFor(ItemStack ingredientStack) {
+        if (!PotionUtil.getPotionEffects(ingredientStack).isEmpty()) {
+            return PotionUtil.getColor(ingredientStack);
+        }
+        Identifier id = Registries.ITEM.getId(ingredientStack.getItem());
+        MealColor color = resolveColor(id);
+        return color != null ? color.rgb() : DEFAULT_TINT_COLOR;
     }
 }

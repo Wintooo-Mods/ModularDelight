@@ -1,4 +1,4 @@
-package net.wintooo.modulardelight.content.data;
+package net.wintooo.modulardelight.content.effect.parsing;
 
 import com.google.gson.JsonObject;
 import net.minecraft.block.Block;

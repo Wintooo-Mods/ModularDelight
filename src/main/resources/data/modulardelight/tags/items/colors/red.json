@@ -1,7 +1,3 @@
 {
-  "values": [
-    "minecraft:beetroot",
-    "minecraft:beetroot_soup",
-    "farmersdelight:fruit_salad"
-  ]
+  "values": ["farmersdelight:apple_pie_slice","farmersdelight:cooked_bacon","farmersdelight:fruit_salad","farmersdelight:melon_juice","farmersdelight:melon_popsicle","farmersdelight:minced_beef","farmersdelight:sweet_berry_cheesecake_slice","farmersdelight:tomato","farmersdelight:tomato_sauce","minecraft:apple","minecraft:beef","minecraft:beetroot","minecraft:beetroot_soup","minecraft:glistering_melon_slice","minecraft:melon_slice","minecraft:mutton","minecraft:red_mushroom","minecraft:salmon","minecraft:spider_eye","minecraft:sweet_berries"]
 }
