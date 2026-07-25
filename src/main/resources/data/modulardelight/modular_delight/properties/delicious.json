@@ -6,7 +6,7 @@
   },
   "condition": {
     "type": "modulardelight:eat_any",
-    "multiplier": 0.5,
+    "multiplier": 0.7,
     "cooldown_ticks": 100,
     "description": "you eat something"
   },

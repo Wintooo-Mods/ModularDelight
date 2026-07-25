@@ -3,7 +3,7 @@
   "condition": {
     "type": "modulardelight:rising",
     "min_velocity": 0.1,
-    "multiplier": 1.0,
+    "multiplier": 0.7,
     "cooldown_ticks": 100,
     "description": "you rise"
   },

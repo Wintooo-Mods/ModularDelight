@@ -6,7 +6,7 @@
   },
   "condition": {
     "type": "modulardelight:night",
-    "multiplier": 0.5,
+    "multiplier": 0.7,
     "cooldown_ticks": 6000,
     "description": "it's night"
   },

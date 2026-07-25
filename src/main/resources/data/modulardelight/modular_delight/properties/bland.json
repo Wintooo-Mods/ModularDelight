@@ -2,7 +2,7 @@
   "name": "Bland",
   "condition": {
     "type": "modulardelight:sneaking",
-    "multiplier": 0.5,
+    "multiplier": 0.7,
     "cooldown_ticks": 400,
     "description": "you sneak"
   },

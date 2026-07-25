@@ -10,7 +10,7 @@
   },
   "condition": {
     "type": "modulardelight:submerged",
-    "multiplier": 0.5,
+    "multiplier": 0.7,
     "cooldown_ticks": 1200,
     "description": "you are submerged in water"
   },

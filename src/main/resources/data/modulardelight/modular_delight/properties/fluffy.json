@@ -11,7 +11,7 @@
   "condition": {
     "type": "modulardelight:falling_fast",
     "min_speed": 0.5,
-    "multiplier": 0.5,
+    "multiplier": 0.7,
     "cooldown_ticks": 600,
     "description": "you fall"
   },
