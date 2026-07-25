@@ -53,7 +53,8 @@ public class PropertyLoader extends JsonDataLoader implements IdentifiableResour
 
                 Identifier icon = json.has("icon") ? EffectJson.id(json, "icon") : null;
                 Text name = EffectJson.text(json, "name", Text.literal(entry.getKey().getPath()));
-                MealProperty property = MealProperty.register(entry.getKey(), icon, name);
+                int color = EffectJson.hexColor(json, "color", 0xCF856E);
+                MealProperty property = MealProperty.register(entry.getKey(), icon, name, color);
 
                 boolean hasCondition = json.has("condition");
                 boolean hasActivated = json.has("activated");
@@ -76,11 +77,6 @@ public class PropertyLoader extends JsonDataLoader implements IdentifiableResour
                 MealProperty.all().size(), effectCount);
     }
 
-    /**
-     * condition/activated are optional (but must appear together, enforced above). A property
-     * with only an "ambient" block is legal — an ambient-only effect, valid solely in the
-     * Ambient slot, with no trigger and no action of its own.
-     */
     private DigestionEffect parseEffect(Identifier id, MealProperty property, JsonObject json) {
         ParsedAmbient ambient = ParsedAmbient.parse(json.has("ambient") ? json.getAsJsonObject("ambient") : null);
 
@@ -88,6 +84,8 @@ public class PropertyLoader extends JsonDataLoader implements IdentifiableResour
         DigestionEffect.DamageTrigger damageTrigger = null;
         DigestionEffect.AttackTrigger attackTrigger = null;
         DigestionEffect.EatTrigger eatTrigger = null;
+        DigestionEffect.BlockBreakTrigger blockBreakTrigger = null;
+        DigestionEffect.KeyPressTrigger keyPressTrigger = null;
         double multiplier = 1.0;
         Text conditionDescription = Text.literal("");
         int cooldownTicks = 0;
@@ -104,6 +102,8 @@ public class PropertyLoader extends JsonDataLoader implements IdentifiableResour
             damageTrigger = trigger.damage();
             attackTrigger = trigger.attack();
             eatTrigger = trigger.eat();
+            blockBreakTrigger = trigger.blockBreak();
+            keyPressTrigger = trigger.keyPress();
 
             JsonObject activatedJson = json.getAsJsonObject("activated");
             JsonObject actionJson = activatedJson.getAsJsonObject("action");
@@ -126,6 +126,8 @@ public class PropertyLoader extends JsonDataLoader implements IdentifiableResour
                 damageTrigger,
                 attackTrigger,
                 eatTrigger,
+                blockBreakTrigger,
+                keyPressTrigger,
                 multiplier,
                 conditionDescription,
                 cooldownTicks,

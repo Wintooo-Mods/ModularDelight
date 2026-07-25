@@ -37,7 +37,7 @@ public final class AmbientReactionTypeRegistry {
         register(ModularDelight.id("reflect_damage"), json -> {
             double fraction = EffectJson.dbl(json, "fraction", 0.25);
 
-            return (player, source, amount, mult) -> {
+            return (player, source, amount) -> {
                 if (source.isOf(DamageTypes.THORNS)) return;
                 Entity attackerEntity = source.getAttacker();
                 if (!(attackerEntity instanceof LivingEntity attacker)) return;

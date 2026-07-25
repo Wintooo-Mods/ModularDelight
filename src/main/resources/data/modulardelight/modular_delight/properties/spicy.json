@@ -1,5 +1,6 @@
 {
   "name": "Spicy",
+  "color": "#F3380B",
   "ambient": {
     "attribute": {
       "id": "minecraft:generic.attack_damage",

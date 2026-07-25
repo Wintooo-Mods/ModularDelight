@@ -1,5 +1,6 @@
 {
   "name": "Bland",
+  "color": "#DCAD7F",
   "condition": {
     "type": "modulardelight:sneaking",
     "multiplier": 0.7,

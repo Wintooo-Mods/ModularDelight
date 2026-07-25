@@ -83,3 +83,5 @@ If you see any bugs, report them to the [Bug Tracker](https://github.com/Wintooo
 ![Stickbug gif. Make sure to report bugs!](readmeimages/get%20stickbugged%20in%202026.gif)
 
 This mod is greatly inspired by [Potluck](https://modrinth.com/mod/potluck) made by [EightSidedSquare](https://www.youtube.com/channel/UCm9WKMrkb005KoZki70X_7g)!
+
+Images featured on this page have since been updated - not all visuals are fully accurate to the current version of the mod.

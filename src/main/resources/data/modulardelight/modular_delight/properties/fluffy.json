@@ -1,5 +1,6 @@
 {
   "name": "Fluffy",
+  "color": "#45E7D7",
   "ambient": {
     "attribute": {
       "id": "porting_lib:entity_gravity",
@@ -9,8 +10,20 @@
     }
   },
   "condition": {
-    "type": "modulardelight:falling_fast",
-    "min_speed": 0.5,
+    "type": "modulardelight:all_of",
+    "conditions": [
+      {
+        "type": "modulardelight:value_check",
+        "value": "modulardelight:velocity_y",
+        "operator": "<",
+        "compare": -0.5
+      },
+      {
+        "type": "modulardelight:state_check",
+        "state": "modulardelight:on_ground",
+        "value": false
+      }
+    ],
     "multiplier": 0.7,
     "cooldown_ticks": 600,
     "description": "you fall"

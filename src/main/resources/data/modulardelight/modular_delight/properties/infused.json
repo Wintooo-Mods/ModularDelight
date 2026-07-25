@@ -1,5 +1,6 @@
 {
   "name": "Infused",
+  "color": "#CF13C2",
   "ambient": {
     "description": "infuses the ingredient's properties into the meal"
   }

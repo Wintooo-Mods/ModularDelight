@@ -1,5 +1,6 @@
 {
   "name": "Sweet",
+  "color": "#F1EC58",
   "ambient": {
     "attribute": {
       "id": "minecraft:generic.movement_speed",
@@ -10,7 +11,9 @@
     }
   },
   "condition": {
-    "type": "modulardelight:sprinting",
+    "type": "modulardelight:state_check",
+    "state": "modulardelight:sprinting",
+    "value": true,
     "multiplier": 0.7,
     "cooldown_ticks": 200,
     "description": "you start sprinting"

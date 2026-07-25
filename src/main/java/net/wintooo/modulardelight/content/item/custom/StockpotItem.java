@@ -3,7 +3,6 @@ package net.wintooo.modulardelight.content.item.custom;
 import net.minecraft.block.Block;
 import net.minecraft.client.item.TooltipData;
 import net.minecraft.item.BlockItem;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.MathHelper;
 import net.wintooo.modulardelight.content.block.custom.entity.StockpotBlockEntity;
@@ -14,7 +13,7 @@ import java.util.Optional;
 public class StockpotItem extends BlockItem {
     private static final int BAR_COLOR = MathHelper.packRgb(0.4F, 0.4F, 1.0F);
 
-    public StockpotItem(Block block, Item.Settings settings) {
+    public StockpotItem(Block block, Settings settings) {
         super(block, settings);
     }
 

@@ -12,6 +12,7 @@ import net.minecraft.client.render.RenderLayer;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.util.Identifier;
 import net.wintooo.modulardelight.content.block.ModBlocks;
+import net.wintooo.modulardelight.content.input.ModKeyBindings;
 import net.wintooo.modulardelight.content.item.ModItems;
 import net.wintooo.modulardelight.content.item.custom.ModularMealItem;
 import net.wintooo.modulardelight.content.network.ModClientNetworking;
@@ -31,6 +32,7 @@ public class ModularDelightClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
         ModClientNetworking.register();
+        ModKeyBindings.register();
 
         ModelPredicateProviderRegistry.register(ModItems.MODULAR_MEAL, ModularDelight.id("pattern"),
                 (stack, world, entity, seed) -> ModularMealItem.getPatternModelIndex(stack));

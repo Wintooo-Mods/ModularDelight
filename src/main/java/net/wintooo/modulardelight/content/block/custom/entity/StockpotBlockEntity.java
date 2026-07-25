@@ -310,10 +310,10 @@ public class StockpotBlockEntity extends BlockEntity implements SidedInventory, 
         storedExperience = nbt.getFloat("Experience");
         cookTime = nbt.getInt("CookTime");
         cookTimeTotal = nbt.getInt("CookTimeTotal");
-        if (nbt.contains("CustomName", net.minecraft.nbt.NbtElement.STRING_TYPE)) {
+        if (nbt.contains("CustomName", NbtElement.STRING_TYPE)) {
             customName = Text.Serializer.fromJson(nbt.getString("CustomName"));
         }
-        if (nbt.contains("Stock", net.minecraft.nbt.NbtElement.COMPOUND_TYPE)) {
+        if (nbt.contains("Stock", NbtElement.COMPOUND_TYPE)) {
             inventory.set(SLOT_STOCK, ItemStack.fromNbt(nbt.getCompound("Stock")));
         }
     }

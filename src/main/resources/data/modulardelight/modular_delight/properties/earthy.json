@@ -1,5 +1,6 @@
 {
   "name": "Earthy",
+  "color": "#159E21",
   "ambient": {
     "attribute": {
       "id": "porting_lib:step_height_addition",

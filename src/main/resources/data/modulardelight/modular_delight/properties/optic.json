@@ -1,11 +1,26 @@
 {
   "name": "Optic",
+  "color": "#FCB031",
   "ambient": {
     "status_effect": { "id": "minecraft:night_vision", "refresh_ticks": 260, "amplifier": 0 },
     "description": "gives you keen senses in the dark"
   },
   "condition": {
-    "type": "modulardelight:night",
+    "type": "modulardelight:all_of",
+    "conditions": [
+      {
+        "type": "modulardelight:value_check",
+        "value": "modulardelight:time_of_day",
+        "operator": ">=",
+        "compare": 13000
+      },
+      {
+        "type": "modulardelight:value_check",
+        "value": "modulardelight:time_of_day",
+        "operator": "<=",
+        "compare": 23000
+      }
+    ],
     "multiplier": 0.7,
     "cooldown_ticks": 6000,
     "description": "it's night"

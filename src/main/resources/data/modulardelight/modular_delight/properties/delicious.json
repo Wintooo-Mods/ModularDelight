@@ -1,5 +1,6 @@
 {
   "name": "Delicious",
+  "color": "#F2C94C",
   "ambient": {
     "always_edible": true,
     "description": "lets you eat anytime"

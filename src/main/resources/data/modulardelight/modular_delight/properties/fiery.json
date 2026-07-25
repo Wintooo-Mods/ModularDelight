@@ -1,5 +1,6 @@
 {
   "name": "Fiery",
+  "color": "#E53935",
   "ambient": {
     "status_effect": { "id": "minecraft:fire_resistance", "refresh_ticks": 260, "amplifier": 0 },
     "description": "makes you immune to fire"

@@ -2,8 +2,10 @@ package net.wintooo.modulardelight.content.util;
 
 import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
+import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import net.fabricmc.fabric.api.event.player.UseItemCallback;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.attribute.EntityAttributeInstance;
@@ -18,6 +20,7 @@ import net.minecraft.nbt.NbtList;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.TypedActionResult;
+import net.minecraft.util.math.BlockPos;
 import net.wintooo.modulardelight.content.meal.DigestionEffect;
 import net.wintooo.modulardelight.content.effect.ModStatusEffects;
 import net.wintooo.modulardelight.content.effect.parsing.ParsedAmbient;
@@ -51,6 +54,12 @@ public class DigestionManager {
                 onDamage(player, source, amount);
             }
             return true;
+        });
+
+        PlayerBlockBreakEvents.AFTER.register((world, player, pos, state, blockEntity) -> {
+            if (!world.isClient && player instanceof ServerPlayerEntity serverPlayer) {
+                onBlockBreak(serverPlayer, state, pos);
+            }
         });
 
         ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> sync(handler.player));
@@ -157,7 +166,7 @@ public class DigestionManager {
         for (ActiveEffect entry : active.values()) {
             DigestionEffect effect = entry.composite();
             for (DigestionEffect.AmbientDamageReaction reaction : effect.ambientDamageReactions()) {
-                reaction.react(player, source, damageTaken, effect.multiplier());
+                reaction.react(player, source, damageTaken);
             }
         }
 
@@ -208,6 +217,44 @@ public class DigestionManager {
             if (cooldown > 0) continue;
 
             if (effect.eatTrigger().test(player, food)) {
+                effect.activatedAction().accept(player, effect.multiplier());
+                cooldowns.put(entry.key(), effect.triggerCooldownTicks());
+            }
+        }
+    }
+
+    public static void onBlockBreak(ServerPlayerEntity player, BlockState state, BlockPos pos) {
+        Map<String, ActiveEffect> active = ACTIVE.get(player.getUuid());
+        if (active == null || active.isEmpty()) return;
+
+        Map<String, Integer> cooldowns = COOLDOWNS.computeIfAbsent(player.getUuid(), k -> new HashMap<>());
+        for (ActiveEffect entry : active.values()) {
+            DigestionEffect effect = entry.composite();
+            if (effect.blockBreakTrigger() == null) continue;
+
+            int cooldown = cooldowns.getOrDefault(entry.key(), 0);
+            if (cooldown > 0) continue;
+
+            if (effect.blockBreakTrigger().test(player, state, pos)) {
+                effect.activatedAction().accept(player, effect.multiplier());
+                cooldowns.put(entry.key(), effect.triggerCooldownTicks());
+            }
+        }
+    }
+
+    public static void onKeyPress(ServerPlayerEntity player, Identifier key) {
+        Map<String, ActiveEffect> active = ACTIVE.get(player.getUuid());
+        if (active == null || active.isEmpty()) return;
+
+        Map<String, Integer> cooldowns = COOLDOWNS.computeIfAbsent(player.getUuid(), k -> new HashMap<>());
+        for (ActiveEffect entry : active.values()) {
+            DigestionEffect effect = entry.composite();
+            if (effect.keyPressTrigger() == null) continue;
+
+            int cooldown = cooldowns.getOrDefault(entry.key(), 0);
+            if (cooldown > 0) continue;
+
+            if (effect.keyPressTrigger().test(player, key)) {
                 effect.activatedAction().accept(player, effect.multiplier());
                 cooldowns.put(entry.key(), effect.triggerCooldownTicks());
             }

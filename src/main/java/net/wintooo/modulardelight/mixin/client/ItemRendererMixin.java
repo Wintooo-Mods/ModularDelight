@@ -1,4 +1,4 @@
-package net.wintooo.modulardelight.mixin;
+package net.wintooo.modulardelight.mixin.client;
 
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.item.ItemRenderer;

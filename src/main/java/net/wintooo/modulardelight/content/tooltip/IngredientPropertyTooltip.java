@@ -1,11 +1,14 @@
 package net.wintooo.modulardelight.content.tooltip;
 
+import com.mojang.blaze3d.systems.RenderSystem;
+
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.tooltip.TooltipComponent;
 import net.minecraft.client.item.TooltipData;
 import net.minecraft.text.Text;
 import net.wintooo.modulardelight.content.meal.MealProperty;
+import net.wintooo.modulardelight.content.options.AccessibilityHelper;
 
 import java.util.List;
 
@@ -38,10 +41,41 @@ public final class IngredientPropertyTooltip {
         @Override
         public void drawItems(TextRenderer textRenderer, int x, int y, DrawContext context) {
             int lineY = y;
+            boolean useColors = AccessibilityHelper.usePropertyColors();
+
             for (MealProperty property : data.properties()) {
-                context.drawTexture(property.icon(), x, lineY, 0, 0, ICON_SIZE, ICON_SIZE, ICON_SIZE, ICON_SIZE);
-                context.drawText(textRenderer, property.name(),
-                        x + ICON_SIZE + ICON_TEXT_GAP, lineY + 1, 0xCF856E, false);
+                if (useColors) {
+                    float red = ((property.color() >> 16) & 0xFF) / 255.0f;
+                    float green = ((property.color() >> 8) & 0xFF) / 255.0f;
+                    float blue = (property.color() & 0xFF) / 255.0f;
+                    RenderSystem.setShaderColor(red, green, blue, 1.0f);
+                } else {
+                    RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
+                }
+
+                context.drawTexture(
+                        property.icon(),
+                        x,
+                        lineY,
+                        0,
+                        0,
+                        ICON_SIZE,
+                        ICON_SIZE,
+                        ICON_SIZE,
+                        ICON_SIZE
+                );
+
+                RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
+
+                context.drawText(
+                        textRenderer,
+                        property.name(),
+                        x + ICON_SIZE + ICON_TEXT_GAP,
+                        lineY + 1,
+                        useColors ? property.color() : 0xFFFFFF,
+                        false
+                );
+
                 lineY += LINE_HEIGHT;
             }
         }

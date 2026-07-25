@@ -1,5 +1,6 @@
 {
   "name": "Stringy",
+  "color": "#D6CD93",
   "ambient": {
     "attribute": {
       "id": "reach-entity-attributes:attack_range",

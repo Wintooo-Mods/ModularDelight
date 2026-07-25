@@ -17,12 +17,11 @@ import net.wintooo.modulardelight.content.data.MealNameFilterLoader;
 import net.wintooo.modulardelight.content.data.MealOverrideLoader;
 import net.wintooo.modulardelight.content.data.PropertyLoader;
 import net.wintooo.modulardelight.content.effect.ModStatusEffects;
-import net.wintooo.modulardelight.content.effect.parsing.ActionTypeRegistry;
-import net.wintooo.modulardelight.content.effect.parsing.AmbientReactionTypeRegistry;
-import net.wintooo.modulardelight.content.effect.parsing.TriggerTypeRegistry;
+import net.wintooo.modulardelight.content.effect.parsing.*;
 import net.wintooo.modulardelight.content.item.ModCreativeMenu;
 import net.wintooo.modulardelight.content.item.ModItems;
 import net.wintooo.modulardelight.content.loot.ModLootFunctions;
+import net.wintooo.modulardelight.content.network.KeyPressNetworking;
 import net.wintooo.modulardelight.content.screen.ModScreenHandlers;
 import net.wintooo.modulardelight.content.util.DigestionManager;
 
@@ -45,6 +44,9 @@ public class ModularDelight implements ModInitializer {
         TriggerTypeRegistry.bootstrap();
         ActionTypeRegistry.bootstrap();
         AmbientReactionTypeRegistry.bootstrap();
+        ValueProviderRegistry.bootstrap();
+        BooleanProviderRegistry.bootstrap();
+        KeyPressNetworking.registerServerReceiver();
         ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(MealColorLoader.INSTANCE);
         ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(PropertyLoader.INSTANCE);
         ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(MealNameFilterLoader.INSTANCE);

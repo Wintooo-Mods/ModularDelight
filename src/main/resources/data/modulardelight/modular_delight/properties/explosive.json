@@ -1,5 +1,6 @@
 {
   "name": "Explosive",
+  "color": "#F05A28",
   "ambient": {
     "attribute": {
       "id": "minecraft:generic.knockback_resistance",

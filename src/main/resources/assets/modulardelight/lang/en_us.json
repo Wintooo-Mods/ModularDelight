@@ -1,4 +1,12 @@
 {
+  "key.categories.modulardelight": "Modular Delight",
+  "key.modulardelight.action_1": "Meal Action 1",
+  "key.modulardelight.action_2": "Meal Action 2",
+  "key.modulardelight.action_3": "Meal Action 3",
+  "key.modulardelight.action_4": "Meal Action 4",
+
+  "options.modulardelight.disable_property_colors": "No Property Colors",
+
   "block.modulardelight.stockpot": "Stockpot",
   "container.modulardelight.stockpot": "Stockpot",
 

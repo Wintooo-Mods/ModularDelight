@@ -213,17 +213,6 @@ public class ModularMealItem extends Item {
                 ModStatusEffects.DIGESTION, DIGESTION_DURATION_TICKS, 0, true, false));
     }
 
-    private static DigestionEffect resolveComposite(List<Identifier> ingredientIds) {
-        if (ingredientIds.size() != REQUIRED_SLOTS) return null;
-
-        DigestionEffect ambientSource = sourceEffect(ingredientIds.get(SLOT_AMBIENT));
-        DigestionEffect conditionSource = sourceEffect(ingredientIds.get(SLOT_CONDITION));
-        DigestionEffect activatedSource = sourceEffect(ingredientIds.get(SLOT_ACTIVATED));
-
-        if (ambientSource == null || conditionSource == null || activatedSource == null) return null;
-        return DigestionEffect.combine(ambientSource, conditionSource, activatedSource);
-    }
-
     private static DigestionEffect sourceEffect(Identifier ingredientId) {
         MealProperty property = resolveProperty(ingredientId);
         return property == null ? null : DigestionEffect.byProperty(property);
@@ -274,8 +263,12 @@ public class ModularMealItem extends Item {
                 .map(s -> Registries.ITEM.getId(s.getItem()))
                 .toList();
 
-        DigestionEffect composite = resolveComposite(ingredientIds);
-        List<Text> descriptionLines = composite == null ? List.of() : composite.getMealTooltip();
+        DigestionEffect ambient = sourceEffect(ingredientIds.get(SLOT_AMBIENT));
+        DigestionEffect condition = sourceEffect(ingredientIds.get(SLOT_CONDITION));
+        DigestionEffect activated = sourceEffect(ingredientIds.get(SLOT_ACTIVATED));
+        List<Text> descriptionLines = ambient == null || condition == null || activated == null
+                ? List.of()
+                : DigestionEffect.getMealTooltip(ambient, condition, activated);
 
         return Optional.of(new MealSummaryTooltip.Data(descriptionLines, ingredientStacks));
     }

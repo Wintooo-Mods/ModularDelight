@@ -2,9 +2,10 @@ package net.wintooo.modulardelight.content.util;
 
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
-import net.wintooo.modulardelight.content.meal.DigestionEffect;
 import net.wintooo.modulardelight.content.meal.ActiveMeal;
+import net.wintooo.modulardelight.content.meal.DigestionEffect;
 import net.wintooo.modulardelight.content.meal.MealProperty;
+import net.wintooo.modulardelight.content.meal.MealTooltipStyle;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,13 +36,8 @@ public final class ClientDigestionManager {
             ActiveMeal meal = ACTIVE.get(i);
             tooltip.add(headerText(meal));
 
-            DigestionEffect composite = DigestionEffect.combine(
-                    meal.ambient(),
-                    meal.condition(),
-                    meal.activated()
-            );
-
-            tooltip.addAll(composite.getActiveTooltip());
+            tooltip.addAll(DigestionEffect.getActiveTooltip(
+                    meal.ambient(), meal.condition(), meal.activated()));
         }
 
         return tooltip;
@@ -52,9 +48,9 @@ public final class ClientDigestionManager {
         MealProperty condition = meal.condition().property();
         MealProperty activated = meal.activated().property();
 
-        Text ambientName = ambient.name();
-        Text conditionName = condition.name();
-        Text activatedName = activated.name();
+        Text ambientName = MealTooltipStyle.property(ambient, ambient.name());
+        Text conditionName = MealTooltipStyle.property(condition, condition.name());
+        Text activatedName = MealTooltipStyle.property(activated, activated.name());
 
         boolean ambientEqCondition = ambient == condition;
         boolean ambientEqActivated = ambient == activated;

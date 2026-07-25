@@ -1,5 +1,6 @@
 package net.wintooo.modulardelight.content.meal;
 
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffectInstance;
@@ -8,6 +9,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.BlockPos;
 import net.wintooo.modulardelight.content.effect.parsing.ParsedAmbient;
 
 import java.util.LinkedHashMap;
@@ -30,6 +32,8 @@ public record DigestionEffect(
         DamageTrigger damageTrigger,
         AttackTrigger attackTrigger,
         EatTrigger eatTrigger,
+        BlockBreakTrigger blockBreakTrigger,
+        KeyPressTrigger keyPressTrigger,
         double multiplier,
         Text conditionDescription,
         int triggerCooldownTicks,
@@ -52,8 +56,18 @@ public record DigestionEffect(
     }
 
     @FunctionalInterface
+    public interface BlockBreakTrigger {
+        boolean test(PlayerEntity player, BlockState state, BlockPos pos);
+    }
+
+    @FunctionalInterface
+    public interface KeyPressTrigger {
+        boolean test(PlayerEntity player, Identifier key);
+    }
+
+    @FunctionalInterface
     public interface AmbientDamageReaction {
-        void react(ServerPlayerEntity player, DamageSource source, float amount, double multiplier);
+        void react(ServerPlayerEntity player, DamageSource source, float amount);
     }
 
     private static final Map<Identifier, DigestionEffect> REGISTRY = new LinkedHashMap<>();
@@ -85,24 +99,61 @@ public record DigestionEffect(
         return null;
     }
 
-    public List<Text> getMealTooltip() {
-        return List.of(
-                Text.translatable("tooltip.modulardelight.meal.description.line1",
-                        ambientDescription().apply(multiplier())),
-                Text.translatable("tooltip.modulardelight.meal.description.line2",
-                        conditionDescription(),
-                        activatedDescription().apply(multiplier()))
+    public static List<Text> getMealTooltip(
+            DigestionEffect ambient,
+            DigestionEffect condition,
+            DigestionEffect activated
+    ) {
+        return getTooltip(
+                "tooltip.modulardelight.meal.description.line1",
+                "tooltip.modulardelight.meal.description.line2",
+                ambient,
+                condition,
+                activated
         );
     }
 
-    public List<Text> getActiveTooltip() {
-        return List.of(
-                Text.translatable("tooltip.modulardelight.active.line1",
-                        ambientDescription().apply(multiplier())),
-                Text.translatable("tooltip.modulardelight.active.line2",
-                        conditionDescription(),
-                        activatedDescription().apply(multiplier()))
+    public static List<Text> getActiveTooltip(
+            DigestionEffect ambient,
+            DigestionEffect condition,
+            DigestionEffect activated
+    ) {
+        return getTooltip(
+                "tooltip.modulardelight.active.line1",
+                "tooltip.modulardelight.active.line2",
+                ambient,
+                condition,
+                activated
         );
+    }
+
+    private static List<Text> getTooltip(
+            String ambientKey,
+            String activationKey,
+            DigestionEffect ambient,
+            DigestionEffect condition,
+            DigestionEffect activated
+    ) {
+        Text ambientText = MealTooltipStyle.property(
+                ambient.property(), ambient.ambientDescription().apply(1.0));
+        Text conditionText = MealTooltipStyle.property(
+                condition.property(),
+                condition.conditionDescription());
+        Text activatedText = MealTooltipStyle.property(
+                activated.property(), activated.activatedDescription().apply(condition.multiplier()));
+
+        if (MealTooltipStyle.hasNonDefaultMultiplier(condition.multiplier())) {
+            conditionText = conditionText.copy()
+                    .append(Text.literal(" "))
+                    .append(MealTooltipStyle.multiplier(condition.multiplier()));
+        }
+
+        Text activationLine = Text.translatable(
+                activationKey,
+                conditionText,
+                activatedText);
+
+        return List.of(Text.translatable(ambientKey, ambientText), activationLine);
     }
 
     public static String compositeKey(DigestionEffect ambient, DigestionEffect condition, DigestionEffect activated) {
@@ -122,6 +173,8 @@ public record DigestionEffect(
                 conditionSource.damageTrigger(),
                 conditionSource.attackTrigger(),
                 conditionSource.eatTrigger(),
+                conditionSource.blockBreakTrigger(),
+                conditionSource.keyPressTrigger(),
                 conditionSource.multiplier(),
                 conditionSource.conditionDescription(),
                 conditionSource.triggerCooldownTicks(),

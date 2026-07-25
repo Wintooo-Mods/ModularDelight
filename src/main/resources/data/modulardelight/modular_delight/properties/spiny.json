@@ -1,5 +1,6 @@
 {
   "name": "Spiny",
+  "color": "#40602E",
   "ambient": {
     "damage_reaction": { "type": "modulardelight:reflect_damage", "fraction": 0.25 },
     "description": "covers you in spikes"

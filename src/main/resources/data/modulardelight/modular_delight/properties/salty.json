@@ -1,5 +1,6 @@
 {
   "name": "Salty",
+  "color": "#EBD1C6",
   "ambient": {
     "attribute": {
       "id": "porting_lib:swim_speed",
@@ -9,7 +10,9 @@
     }
   },
   "condition": {
-    "type": "modulardelight:submerged",
+    "type": "modulardelight:state_check",
+    "state": "modulardelight:submerged",
+    "value": true,
     "multiplier": 0.7,
     "cooldown_ticks": 1200,
     "description": "you are submerged in water"

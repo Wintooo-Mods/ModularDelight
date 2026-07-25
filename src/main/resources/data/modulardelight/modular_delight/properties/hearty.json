@@ -1,5 +1,6 @@
 {
   "name": "Hearty",
+  "color": "#A5070B",
   "ambient": {
     "attribute": {
       "id": "minecraft:generic.max_health",
@@ -10,10 +11,11 @@
     }
   },
   "condition": {
-    "type": "modulardelight:low_health",
-    "threshold": 10.0,
+    "type": "modulardelight:value_check",
+    "value": "modulardelight:health",
+    "operator": "<",
+    "compare": 10.0,
     "multiplier": 1.0,
-    "cooldown_ticks": 100,
     "description": "you drop below 5 hearts"
   },
   "activated": {

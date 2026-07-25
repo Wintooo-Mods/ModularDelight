@@ -11,9 +11,11 @@ import net.minecraft.registry.Registries;
 import net.minecraft.registry.tag.TagKey;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.JsonHelper;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.wintooo.modulardelight.ModularDelight;
+import net.wintooo.modulardelight.content.meal.DigestionEffect;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -54,6 +56,10 @@ public final class TriggerTypeRegistry {
             case ATTACK -> ParsedTrigger.attack(
                     (attacker, target, dealt) -> !trigger.attack().test(attacker, target, dealt), description);
             case EAT -> ParsedTrigger.eat((player, food) -> !trigger.eat().test(player, food), description);
+            case BLOCK_BREAK -> ParsedTrigger.blockBreak(
+                    (player, state, pos) -> !trigger.blockBreak().test(player, state, pos), description);
+            case KEY_PRESS -> ParsedTrigger.keyPress(
+                    (player, key) -> !trigger.keyPress().test(player, key), description);
         };
     }
 
@@ -165,6 +171,56 @@ public final class TriggerTypeRegistry {
         register(ModularDelight.id("eat_any"), json ->
                 ParsedTrigger.eat((player, food) -> true, Text.literal("you eat something")));
 
+        register(ModularDelight.id("value_check"), json -> {
+            Identifier valueId = EffectJson.id(json, "value");
+            var provider = ValueProviderRegistry.get(valueId);
+            String operator = JsonHelper.getString(json, "operator", ">");
+            double target = EffectJson.dbl(json, "compare", 0.0);
+
+            Predicate<PlayerEntity> predicate = switch (operator) {
+                case ">=" -> p -> provider.applyAsDouble(p) >= target;
+                case "<" -> p -> provider.applyAsDouble(p) < target;
+                case "<=" -> p -> provider.applyAsDouble(p) <= target;
+                case "==" -> p -> Math.abs(provider.applyAsDouble(p) - target) < 0.0001;
+                case "!=" -> p -> Math.abs(provider.applyAsDouble(p) - target) >= 0.0001;
+                default -> p -> provider.applyAsDouble(p) > target;
+            };
+
+            return ParsedTrigger.tick(predicate, Text.literal("a condition is met"));
+        });
+
+        register(ModularDelight.id("state_check"), json -> {
+            Identifier stateId = EffectJson.id(json, "state");
+            Predicate<PlayerEntity> provider = BooleanProviderRegistry.get(stateId);
+            boolean want = EffectJson.bool(json, "value", true);
+            return ParsedTrigger.tick(p -> provider.test(p) == want, Text.literal("you meet a condition"));
+        });
+
+        register(ModularDelight.id("block_break"), json -> {
+            List<Identifier> blocks = EffectJson.idList(json, "blocks");
+            List<Identifier> blockTags = EffectJson.idList(json, "block_tags");
+
+            DigestionEffect.BlockBreakTrigger trigger = (player, state, pos) -> {
+                boolean hasConstraints = !blocks.isEmpty() || !blockTags.isEmpty();
+                if (!hasConstraints) return true;
+                Identifier blockId = Registries.BLOCK.getId(state.getBlock());
+                if (blocks.contains(blockId)) return true;
+                for (Identifier tagId : blockTags) {
+                    TagKey<Block> tag = TagKey.of(RegistryKeys.BLOCK, tagId);
+                    if (state.isIn(tag)) return true;
+                }
+                return false;
+            };
+
+            return ParsedTrigger.blockBreak(trigger, Text.literal("you break a block"));
+        });
+
+        register(ModularDelight.id("key_press"), json -> {
+            Identifier keyId = EffectJson.id(json, "key");
+            DigestionEffect.KeyPressTrigger trigger = (player, pressedKey) -> pressedKey.equals(keyId);
+            return ParsedTrigger.keyPress(trigger, Text.literal("you press a key"));
+        });
+
         register(ModularDelight.id("all_of"), json -> parseCombinator(json, true));
         register(ModularDelight.id("any_of"), json -> parseCombinator(json, false));
     }
@@ -196,6 +252,10 @@ public final class TriggerTypeRegistry {
                     (attacker, target, dealt) -> matches(subs, requireAll, s -> s.attack().test(attacker, target, dealt)), description);
             case EAT -> ParsedTrigger.eat(
                     (player, food) -> matches(subs, requireAll, s -> s.eat().test(player, food)), description);
+            case BLOCK_BREAK -> ParsedTrigger.blockBreak(
+                    (player, state, pos) -> matches(subs, requireAll, s -> s.blockBreak().test(player, state, pos)), description);
+            case KEY_PRESS -> ParsedTrigger.keyPress(
+                    (player, key) -> matches(subs, requireAll, s -> s.keyPress().test(player, key)), description);
         };
     }
 

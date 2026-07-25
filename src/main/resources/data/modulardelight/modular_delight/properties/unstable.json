@@ -1,5 +1,6 @@
 {
   "name": "Unstable",
+  "color": "#A93FC9",
   "ambient": { "description": "leaves you feeling untethered" },
   "condition": {
     "type": "modulardelight:random_chance",
