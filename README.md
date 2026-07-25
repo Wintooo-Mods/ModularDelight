@@ -76,6 +76,10 @@ A few things worth knowing as you get started:
 
 There's plenty more you can hook into - custom meal name filtering, hardcoded name/model overrides for specific ingredient combos, custom ambient reactions, and the full list of built-in condition and action types. For the complete reference, visit the [GitHub](https://github.com/Wintooo-Mods/ModularDelight), and for help (+ a template datapack), visit the [Discord](https://discord.gg/kTQXkVUysM). Another great resource is simply looking and the [Origins Wiki](https://origins.readthedocs.io/), although quite a different mod - it may help.
 
-Also, if you see any bugs, report them to the [Bug Tracker](https://github.com/Wintooo-Mods/ModularDelight/issues).
+## Extra
+
+If you see any bugs, report them to the [Bug Tracker](https://github.com/Wintooo-Mods/ModularDelight/issues).
 
 ![Stickbug gif. Make sure to report bugs!](readmeimages/get%20stickbugged%20in%202026.gif)
+
+This mod is greatly inspired by [Potluck](https://modrinth.com/mod/potluck) made by [EightSidedSquare](https://www.youtube.com/channel/UCm9WKMrkb005KoZki70X_7g)!
