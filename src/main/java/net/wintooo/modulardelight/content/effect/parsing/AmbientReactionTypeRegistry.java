@@ -45,7 +45,7 @@ public final class AmbientReactionTypeRegistry {
                 World world = player.getWorld();
                 if (world.isClient) return;
 
-                float reflected = (float) (amount * fraction * mult);
+                float reflected = (float) (amount * fraction);
                 if (reflected <= 0f) return;
                 attacker.damage(world.getDamageSources().thorns(player), reflected);
             };

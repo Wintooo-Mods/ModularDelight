@@ -239,7 +239,7 @@ public class DigestionManager {
                     desiredAttrs.put(modifierId, attr);
                     desiredMods.put(modifierId, new EntityAttributeModifier(
                             modifierId, "modulardelight:" + effect.id() + ":" + i,
-                            attr.baseAmount() * effect.multiplier(), attr.operation()));
+                            attr.baseAmount(), attr.operation()));
                 }
             }
         }

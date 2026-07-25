@@ -16,6 +16,7 @@
     "requireAnnotations": true
   },
   "client": [
+    "ItemRendererMixin",
     "client.ScreenAccessor"
   ]
 }

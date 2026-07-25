@@ -48,9 +48,14 @@ public class MealOverrideLoader extends JsonDataLoader implements IdentifiableRe
 
                 boolean ordered = EffectJson.bool(json, "ordered", false);
                 Text name = EffectJson.text(json, "name", null);
-                Float modelIndex = json.has("model_index") ? (float) EffectJson.dbl(json, "model_index", 0.0) : null;
+                Identifier model = json.has("model")
+                        ? new Identifier(json.get("model").getAsString())
+                        : null;
 
-                MealOverrideRegistry.register(entry.getKey(), new MealOverride(ingredients, ordered, name, modelIndex));
+                MealOverrideRegistry.register(
+                        entry.getKey(),
+                        new MealOverride(ingredients, ordered, name, model)
+                );
             } catch (Exception e) {
                 LOGGER.error("Failed to load modular delight meal override {}", entry.getKey(), e);
             }

@@ -64,7 +64,6 @@ public final class ActionTypeRegistry {
         register(ModularDelight.id("chance"), ActionTypeRegistry::parseChance);
         register(ModularDelight.id("choice"), ActionTypeRegistry::parseChoice);
         register(ModularDelight.id("delay"), ActionTypeRegistry::parseDelay);
-        register(ModularDelight.id("nothing"), ActionTypeRegistry::parseNothing);
         registerDelayScheduler();
     }
 
@@ -458,14 +457,6 @@ public final class ActionTypeRegistry {
                 },
                 mult -> action.describeArgs().apply(mult),
                 mult -> action.defaultDescription().apply(mult)
-        );
-    }
-
-    private static ParsedAction parseNothing(JsonObject json) {
-        return new ParsedAction(
-                (player, mult) -> {},
-                mult -> new Object[0],
-                mult -> Text.literal("do nothing")
         );
     }
 }

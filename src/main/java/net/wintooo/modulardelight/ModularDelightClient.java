@@ -2,11 +2,15 @@ package net.wintooo.modulardelight;
 
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
+import net.fabricmc.fabric.api.client.model.loading.v1.ModelLoadingPlugin;
 import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.TooltipComponentCallback;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ingame.HandledScreens;
 import net.minecraft.client.item.ModelPredicateProviderRegistry;
 import net.minecraft.client.render.RenderLayer;
+import net.minecraft.resource.ResourceManager;
+import net.minecraft.util.Identifier;
 import net.wintooo.modulardelight.content.block.ModBlocks;
 import net.wintooo.modulardelight.content.item.ModItems;
 import net.wintooo.modulardelight.content.item.custom.ModularMealItem;
@@ -18,6 +22,8 @@ import net.wintooo.modulardelight.content.tooltip.MealSummaryTooltip;
 import net.wintooo.modulardelight.content.tooltip.StockpotTooltip;
 
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class ModularDelightClient implements ClientModInitializer {
     private static final int NO_TINT = -1;
@@ -28,6 +34,23 @@ public class ModularDelightClient implements ClientModInitializer {
 
         ModelPredicateProviderRegistry.register(ModItems.MODULAR_MEAL, ModularDelight.id("pattern"),
                 (stack, world, entity, seed) -> ModularMealItem.getPatternModelIndex(stack));
+
+        ModelLoadingPlugin.register(context -> {
+            ResourceManager resources = MinecraftClient.getInstance().getResourceManager();
+
+            Set<Identifier> models = resources.findResources(
+                    "models/item/modular_meal",
+                    id -> id.getPath().endsWith(".json")
+            ).keySet().stream().map(fileId -> {
+                String path = fileId.getPath()
+                        .substring("models/".length())
+                        .replaceFirst("\\.json$", "");
+
+                return new Identifier(fileId.getNamespace(), path);
+            }).collect(Collectors.toSet());
+
+            context.addModels(models);
+        });
 
         BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.STOCKPOT, RenderLayer.getCutout());
 

@@ -19,6 +19,7 @@ import net.minecraft.registry.Registries;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.InvalidIdentifierException;
 import net.minecraft.world.World;
 import net.wintooo.modulardelight.content.data.MealNameFilterRegistry;
 import net.wintooo.modulardelight.content.data.MealOverride;
@@ -258,7 +259,7 @@ public class ModularMealItem extends Item {
         List<Identifier> ingredientIds = getIngredientIds(stack);
 
         MealOverride override = MealOverrideRegistry.find(ingredientIds);
-        if (override != null && override.modelIndex() != null) return override.modelIndex();
+        ModularMealItem.setOverrideModel(stack, override == null ? null : override.model());
 
         MealPattern pattern = resolvePattern(ingredientIds);
         return pattern == null ? 0f : pattern.modelIndex();
@@ -344,5 +345,29 @@ public class ModularMealItem extends Item {
         Identifier id = Registries.ITEM.getId(ingredientStack.getItem());
         MealColor color = resolveColor(id);
         return color != null ? color.rgb() : DEFAULT_TINT_COLOR;
+    }
+
+    public static final String OVERRIDE_MODEL_KEY = "MealOverrideModel";
+
+    public static void setOverrideModel(ItemStack stack, @Nullable Identifier model) {
+        if (model == null) {
+            stack.removeSubNbt(OVERRIDE_MODEL_KEY);
+        } else {
+            stack.getOrCreateNbt().putString(OVERRIDE_MODEL_KEY, model.toString());
+        }
+    }
+
+    @Nullable
+    public static Identifier getOverrideModel(ItemStack stack) {
+        NbtCompound nbt = stack.getNbt();
+        if (nbt == null || !nbt.contains(OVERRIDE_MODEL_KEY, NbtElement.STRING_TYPE)) {
+            return null;
+        }
+
+        try {
+            return new Identifier(nbt.getString(OVERRIDE_MODEL_KEY));
+        } catch (InvalidIdentifierException ignored) {
+            return null;
+        }
     }
 }

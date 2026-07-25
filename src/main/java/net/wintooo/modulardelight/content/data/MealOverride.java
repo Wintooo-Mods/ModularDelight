@@ -7,7 +7,12 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-public record MealOverride(List<Identifier> ingredients, boolean ordered, Text name, Float modelIndex) {
+public record MealOverride(
+        List<Identifier> ingredients,
+        boolean ordered,
+        Text name,
+        Identifier model
+) {
     public boolean matches(List<Identifier> ingredientIds) {
         if (ingredientIds.size() != ingredients.size()) return false;
         if (ordered) return ingredients.equals(ingredientIds);
