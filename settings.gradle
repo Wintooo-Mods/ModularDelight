@@ -10,4 +10,4 @@ pluginManagement {
 }
 
 // Should match your modid
-rootProject.name = 'modular-delight'
+rootProject.name = 'modulardelight'
